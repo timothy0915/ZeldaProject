@@ -34,20 +34,20 @@ public class PlayerControl : MonoBehaviour
         {
             animator.SetBool("MoveW", true);
         }
-        //如果輸入的是S
-        if (Input.GetKey(KeyCode.S))
-        {
-            animator.SetBool("MoveS", true);
-        }
-        //如果輸入的是A
-        if (Input.GetKey(KeyCode.A))
-        {
-            animator.SetBool("MoveA", true);
-        }
-        //如果輸入的是D
-        if (Input.GetKey(KeyCode.D))
-        {
-            animator.SetBool("MoveD", true);
-        }
+        ////如果輸入的是S
+        //if (Input.GetKey(KeyCode.S))
+        //{
+        //    animator.SetBool("MoveS", true);
+        //}
+        ////如果輸入的是A
+        //if (Input.GetKey(KeyCode.A))
+        //{
+        //    animator.SetBool("MoveA", true);
+        //}
+        ////如果輸入的是D
+        //if (Input.GetKey(KeyCode.D))
+        //{
+        //    animator.SetBool("MoveD", true);
+        //}
     }
 }
