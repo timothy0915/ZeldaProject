@@ -39543,6 +39543,10 @@ PrefabInstance:
       propertyPath: m_Size.y
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: 4993149912950423741, guid: a90bc75212a7dce42b961e277b470f8e, type: 3}
+      propertyPath: m_Size.z
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -46460,7 +46464,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1519188697402770169, guid: a90bc75212a7dce42b961e277b470f8e, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.79720473
+      value: 0.9622496
       objectReference: {fileID: 0}
     - target: {fileID: 1519188697402770169, guid: a90bc75212a7dce42b961e277b470f8e, type: 3}
       propertyPath: m_LocalRotation.x
@@ -46468,7 +46472,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1519188697402770169, guid: a90bc75212a7dce42b961e277b470f8e, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.60370904
+      value: 0.27216867
       objectReference: {fileID: 0}
     - target: {fileID: 1519188697402770169, guid: a90bc75212a7dce42b961e277b470f8e, type: 3}
       propertyPath: m_LocalRotation.z
@@ -46480,7 +46484,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1519188697402770169, guid: a90bc75212a7dce42b961e277b470f8e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 74.272
+      value: 31.587
       objectReference: {fileID: 0}
     - target: {fileID: 1519188697402770169, guid: a90bc75212a7dce42b961e277b470f8e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -46489,6 +46493,10 @@ PrefabInstance:
     - target: {fileID: 2188448971541403715, guid: a90bc75212a7dce42b961e277b470f8e, type: 3}
       propertyPath: m_Name
       value: Tree02_345 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4993149912950423741, guid: a90bc75212a7dce42b961e277b470f8e, type: 3}
+      propertyPath: m_Size.x
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 4993149912950423741, guid: a90bc75212a7dce42b961e277b470f8e, type: 3}
       propertyPath: m_Size.y
