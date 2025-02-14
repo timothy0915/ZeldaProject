@@ -11,6 +11,7 @@ public class AnimatorCtrl : MonoBehaviour
     float hitTime = 0f ;
     float focusTime = 0f;
     int spinTime = 0;
+    float pastTime = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -31,13 +32,13 @@ public class AnimatorCtrl : MonoBehaviour
                 spinTime -= 1;
                 if(spinTime<=0)
                 {
-                    anim.SetBool("spining", false);
+                    anim.SetBool("spinning", false);
                 }
             }
         }
-        if ( Input.GetKey(KeyCode.Mouse0))
+        if ( Input.GetKeyDown(KeyCode.Mouse0))//按下左鍵(單次觸發
         {
-            float k = timer_i - hitTime;
+            pastTime = timer_i - hitTime;
      /*
             if (k < 0.1f)
             {
@@ -45,7 +46,7 @@ public class AnimatorCtrl : MonoBehaviour
             }
      */     
             anim.SetBool("attacking", true);
-            if (hit >= 3 || k >= 3f)
+            if (hit >= 3 || pastTime >= 3f)
             {
                 hit = 1;
             }
@@ -54,31 +55,35 @@ public class AnimatorCtrl : MonoBehaviour
                 hit += 1;
             }
             anim.SetInteger("attack", hit);
-            Debug.Log("在"+ k +"秒後的第" + hit + "擊");
+            Debug.Log("在"+ pastTime + "秒後的第" + hit + "擊");
             hitTime = focusTime = timer_f;
-        }
-        if (Input.GetKeyDown(GetKeyUp(KeyCode.Mouse0)))
-        {
             anim.SetBool("focusing", true);
-
+        }
+        if (Input.GetKey(KeyCode.Mouse0))//按住左鍵(持續觸發
+        {
+            pastTime = timer_i - focusTime +0.7f ;
+            if (pastTime >= 1)
+            {
+                anim.SetBool("attacking", false);
+            }
         }
 
-        if (Input.GetKeyUp(KeyCode.Mouse0))
+            if (Input.GetKeyUp(KeyCode.Mouse0))//放開左鍵
         {
             anim.SetBool("attacking", false);
-            float k = timer_i - focusTime;
-            if (k >= 2)
+            pastTime = timer_i - focusTime;
+            if (pastTime >= 2)
             {
-                anim.SetBool("spining", true);
-                spinTime = 3;
+                anim.SetBool("spinning", true);
+                spinTime = 2;
             }
             anim.SetBool("focusing", false);
         }
-        if (Input.GetKeyDown(KeyCode.Mouse1))
+        if (Input.GetKeyDown(KeyCode.Mouse1))//按下右鍵
         {
             anim.SetBool("defending", true);
         }
-            if (Input.GetKeyUp(KeyCode.Mouse1))
+        if (Input.GetKeyUp(KeyCode.Mouse1))//放開左鍵
         {
             anim.SetBool("defending", false);
         }
