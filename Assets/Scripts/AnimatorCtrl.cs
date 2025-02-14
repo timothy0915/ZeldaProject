@@ -35,8 +35,7 @@ public class AnimatorCtrl : MonoBehaviour
                 }
             }
         }
-        // Input.GetKeyDown(KeyCode.X)
-        if ( Input.GetKeyDown(KeyCode.Mouse0))
+        if ( Input.GetKey(KeyCode.Mouse0))
         {
             float k = timer_i - hitTime;
      /*
@@ -58,7 +57,7 @@ public class AnimatorCtrl : MonoBehaviour
             Debug.Log("在"+ k +"秒後的第" + hit + "擊");
             hitTime = focusTime = timer_f;
         }
-        if (Input.GetKeyDown(GetKeyUp(KeyCode.Mouse0))
+        if (Input.GetKeyDown(GetKeyUp(KeyCode.Mouse0)))
         {
             anim.SetBool("focusing", true);
 
