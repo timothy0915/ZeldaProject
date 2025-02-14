@@ -13,11 +13,11 @@ public class CamerBehavior : MonoBehaviour
     public Transform _target;
 
     //滑鼠最低可看角度
-    float MinVerticalAngle = 40f;
+    float MinVerticalAngle = 30f;
     //滑鼠最高可看角度
-    float MaxVeticalAngle = 70;
+    float MaxVeticalAngle = 80f;
     //攝影機距離目標的位置
-    float CameraToTargetDistance = 10f;
+    float CameraToTargetDistance = 35f;
     float mouse_x = 0f;
     float mouse_y = 30f;
     Vector3 smoothVelocity = Vector3.zero;

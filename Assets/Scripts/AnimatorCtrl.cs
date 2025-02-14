@@ -57,14 +57,19 @@ public class AnimatorCtrl : MonoBehaviour
             anim.SetInteger("attack", hit);
             Debug.Log("在"+ pastTime + "秒後的第" + hit + "擊");
             hitTime = focusTime = timer_f;
-            anim.SetBool("focusing", true);
+           
         }
         if (Input.GetKey(KeyCode.Mouse0))//按住左鍵(持續觸發
         {
             pastTime = timer_i - focusTime +0.7f ;
-            if (pastTime >= 1)
+            if (pastTime <= 1)
+            {
+                anim.SetBool("focusing", false);
+            }
+            else
             {
                 anim.SetBool("attacking", false);
+                anim.SetBool("focusing", true);
             }
         }
 
