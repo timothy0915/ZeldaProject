@@ -3510,37 +3510,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1519188697402770169, guid: a90bc75212a7dce42b961e277b470f8e, type: 3}
   m_PrefabInstance: {fileID: 138228221}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &139887708
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 139887709}
-  m_Layer: 0
-  m_Name: PlayerSign
-  m_TagString: Player
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &139887709
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 139887708}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 28.42, y: 0.88, z: -31.62}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &143167580
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8715,7 +8684,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sensitiviy_x: 2
   sensitiviy_y: 2
-  CamOffest: {x: 0, y: 2, z: -5}
+  CamOffset: {x: 0, y: 2, z: -5}
   _target: {fileID: 1286212367}
 --- !u!1001 &337204177
 PrefabInstance:
@@ -38076,7 +38045,7 @@ CapsuleCollider:
   m_Radius: 0.5
   m_Height: 1
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 30, z: 0}
 --- !u!114 &1286212370
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38131,7 +38100,7 @@ CharacterController:
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.55, z: 0}
+  m_Center: {x: 0, y: 0.45, z: 0}
 --- !u!1001 &1289782792
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -62799,4 +62768,3 @@ SceneRoots:
   - {fileID: 1045300659}
   - {fileID: 330585546}
   - {fileID: 614512289}
-  - {fileID: 139887709}

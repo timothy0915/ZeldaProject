@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
 
 public class SceneTransition : MonoBehaviour
 {
@@ -11,29 +11,52 @@ public class SceneTransition : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        // 檢查碰撞的物件是否是 Player
+        // 檢查是否是 Player 進入傳送點
         if (other.CompareTag("Player"))
         {
+            // 存儲 Player 位置
+            PlayerPrefs.SetFloat("TargetX", targetPosition.x);
+            PlayerPrefs.SetFloat("TargetY", targetPosition.y);
+            PlayerPrefs.SetFloat("TargetZ", targetPosition.z);
+            PlayerPrefs.SetInt("HasSavedPosition", 1); // 標記為已儲存
+            PlayerPrefs.Save(); // 確保數據被保存
+
             // 加載目標場景
             SceneManager.LoadScene(targetSceneName);
 
-            // 在場景加載後，將 Player 移動到指定位置
+            // 訂閱 SceneManager 事件，確保場景載入完成後移動 Player
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // 找到 Player 物件
+        // 找到場景中的 Player
         GameObject player = GameObject.FindGameObjectWithTag("Player");
 
-        if (player != null)
+        if (player != null && PlayerPrefs.GetInt("HasSavedPosition", 0) == 1)
         {
-            // 將 Player 移動到指定位置
-            player.transform.position = targetPosition;
+            // 讀取儲存的 Player 位置
+            float x = PlayerPrefs.GetFloat("TargetX");
+            float y = PlayerPrefs.GetFloat("TargetY");
+            float z = PlayerPrefs.GetFloat("TargetZ");
+
+            // 設定 Player 位置
+            player.transform.position = new Vector3(x, y, z);
+
+            UnityEngine.Debug.Log($"玩家移動到新位置: {player.transform.position}");
+
+            // 重置存檔，避免下次開場景時再移動
+            PlayerPrefs.SetInt("HasSavedPosition", 0);
+            PlayerPrefs.Save();
+        }
+        else
+        {
+            player.transform.position = new Vector3(32.05f, 0f, -32.51f);
+
         }
 
-        // 取消訂閱事件，避免重複執行
+        // 取消訂閱，防止多次觸發
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 }
