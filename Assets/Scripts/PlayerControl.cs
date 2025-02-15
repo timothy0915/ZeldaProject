@@ -9,8 +9,7 @@ public class PlayerControl : MonoBehaviour
     //移動速度
     public float MoveSpeed = 10f;
     //奔跑速度加乘
-    [Range(1, 3)]
-    public float SprintSpeedModifier = 2;
+    [Range(1, 3)] public float SprintSpeedModifier = 2;
     //旋轉速度
     public float RotateSpeed = 75f;
     //重力
@@ -35,6 +34,7 @@ public class PlayerControl : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         _cc = GetComponent<CharacterController>();
+        
     }
 
     // Update is called once per frame
@@ -47,14 +47,14 @@ public class PlayerControl : MonoBehaviour
     Vector3 GetMoveInput()
     {
         Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
-        move = Vector3.ClampMagnitude(move, 1);
-        return move;
+        return Vector3.ClampMagnitude(move, 1);
     }
     void MoveBehaviour()
     {
         TargetMovement = Vector3.zero;
-        TargetMovement += GetMoveInput().z * GetCurrentCameraForward();
-        TargetMovement += GetMoveInput().x * GetCurrentCameraRight();
+        TargetMovement += GetMoveInput().z * Vector3.forward;
+        TargetMovement += GetMoveInput().x * Vector3.right;
+
 
         //避免對角線超過1
         TargetMovement = Vector3.ClampMagnitude(TargetMovement, 1);
@@ -67,12 +67,13 @@ public class PlayerControl : MonoBehaviour
             nextFrameSpeed = 0f;
             animator.SetFloat("MoveSpeed", 0f);
         }
-        if(TargetMovement != Vector3.zero)
+        else
         {
             SmoothRotation(TargetMovement);
             animator.SetFloat("MoveSpeed", 0.5f);
         }
-        else if (IsRun())
+        
+        if (IsRun())
         {
             nextFrameSpeed = 1f;
             TargetMovement *= SprintSpeedModifier;
@@ -106,11 +107,12 @@ public class PlayerControl : MonoBehaviour
     }
 
     
-
+    /*
     private bool IsGrounded()
     {
         return Physics.Raycast(transform.position, Vector3.down, DistanceToGround);
     }
+    */
 
     private Vector3 GetCurrentCameraForward()
     {
