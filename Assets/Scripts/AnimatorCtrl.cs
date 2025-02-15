@@ -27,7 +27,7 @@ public class AnimatorCtrl : MonoBehaviour
         if (timer_f-1 > timer_i)
         {
             timer_i = (int)timer_f;
-            Debug.Log(timer_i);
+            //Debug.Log(timer_i);讀秒
             if (spinTime>=1)
             {
                 spinTime -= 1;
@@ -56,7 +56,7 @@ public class AnimatorCtrl : MonoBehaviour
                 hit += 1;
             }
             anim.SetInteger("attack", hit);
-            Debug.Log("在"+ pastTime + "秒後的第" + hit + "擊");
+            //Debug.Log("在"+ pastTime + "秒後的第" + hit + "擊");
             hitTime = focusTime = timer_f;
            // Invoke( "anim.SetBool("attacking", false)" ,2);這條可以延後觸發函式，之後把指令全用函式存就可以用了
         }
