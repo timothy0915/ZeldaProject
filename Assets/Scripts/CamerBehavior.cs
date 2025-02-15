@@ -9,15 +9,15 @@ public class CamerBehavior : MonoBehaviour
     public float sensitiviy_x = 2f;
     //垂直靈敏度
     public float sensitiviy_y = 2f;
-    public Vector3 CamOffest = new Vector3(0f, 1.2f, -2.6f);
+    public Vector3 CamOffest = new Vector3(0f, 2f, -5f);
     public Transform _target;
 
     //滑鼠最低可看角度
-    float MinVerticalAngle = 40f;
+    float MinVerticalAngle = 30f;
     //滑鼠最高可看角度
-    float MaxVeticalAngle = 70;
+    float MaxVeticalAngle = 80f;
     //攝影機距離目標的位置
-    float CameraToTargetDistance = 10f;
+    float CameraToTargetDistance = 35f;
     float mouse_x = 0f;
     float mouse_y = 30f;
     Vector3 smoothVelocity = Vector3.zero;
@@ -36,12 +36,13 @@ public class CamerBehavior : MonoBehaviour
     }
     void LateUpdate()
     {
-        mouse_x += GetMouseXAxis() * sensitiviy_x;
-        mouse_y -= GetMouseYAxis() * sensitiviy_y;
-        mouse_y = Mathf.Clamp(mouse_y, MinVerticalAngle, MaxVeticalAngle);
+        if (_target == null) return;
 
-        transform.rotation = Quaternion.Euler(mouse_y, mouse_x, 0f);
-        transform.position = Quaternion.Euler(mouse_y, mouse_x, 0) * new Vector3(0, 0, -CameraToTargetDistance) + _target.position + Vector3.up * CamOffest.y;
+        // 使用 Lerp 平滑移動
+
+        transform.LookAt(_target.position + Vector3.up * 1.5f);
+        transform.position = new Vector3(0, 0, -CameraToTargetDistance) + _target.position + Vector3.up * CamOffest.y;
+        CamOffest = new Vector3(0f, 20f, 0f);
     }
 
 
