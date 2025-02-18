@@ -9,23 +9,40 @@ public class SceneTransition : MonoBehaviour
     public string targetSceneName; // 目標場景名稱
     public Vector3 targetPosition; // 目標位置
 
+    FadeInOut fade;//呼叫淡入淡出的控制器
+
+    private void Start()
+    {
+        //尋找場景中的FadeInOut組件
+        fade = FindObjectOfType<FadeInOut>();
+    }
+
+    public IEnumerator ChangeScene()
+    {
+        //開始淡入的效果
+        fade.FadeIn();
+        //等待1秒，確保淡入完成
+        yield return new WaitForSeconds(1);
+        // 存儲 Player 位置
+        PlayerPrefs.SetFloat("TargetX", targetPosition.x);
+        PlayerPrefs.SetFloat("TargetY", targetPosition.y);
+        PlayerPrefs.SetFloat("TargetZ", targetPosition.z);
+        PlayerPrefs.SetInt("HasSavedPosition", 1); // 標記為已儲存
+        PlayerPrefs.Save(); // 確保數據被保存
+
+        // 加載目標場景
+        SceneManager.LoadScene(targetSceneName);
+
+        // 訂閱 SceneManager 事件，確保場景載入完成後移動 Player
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
     private void OnTriggerEnter(Collider other)
     {
         // 檢查是否是 Player 進入傳送點
         if (other.CompareTag("Player"))
         {
-            // 存儲 Player 位置
-            PlayerPrefs.SetFloat("TargetX", targetPosition.x);
-            PlayerPrefs.SetFloat("TargetY", targetPosition.y);
-            PlayerPrefs.SetFloat("TargetZ", targetPosition.z);
-            PlayerPrefs.SetInt("HasSavedPosition", 1); // 標記為已儲存
-            PlayerPrefs.Save(); // 確保數據被保存
-
-            // 加載目標場景
-            SceneManager.LoadScene(targetSceneName);
-
-            // 訂閱 SceneManager 事件，確保場景載入完成後移動 Player
-            SceneManager.sceneLoaded += OnSceneLoaded;
+            // 開始切換場景
+            StartCoroutine(ChangeScene());
         }
     }
 
