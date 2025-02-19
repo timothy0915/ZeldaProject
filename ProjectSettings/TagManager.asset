@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - GetSkill
+  - enemy
   layers:
   - Default
   - TransparentFX
