@@ -72,7 +72,7 @@ public class SceneTransition : MonoBehaviour
             player.transform.position = new Vector3(32.05f, 0f, -32.51f);
 
         }
-
+       // UnityEngine.Debug.Log(player.name + " OnSceneLoaded : " + player.transform.position);
         // 取消訂閱，防止多次觸發
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }

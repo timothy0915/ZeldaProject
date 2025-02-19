@@ -19,11 +19,29 @@ public class PlayerControl : MonoBehaviour
     float lastFrameSpeed;
 
     CharacterController _cc;
-
+    bool bInitFirst = false;
     void Start()
     {
         // **讀取場景切換時儲存的玩家位置**
-        if (PlayerPrefs.GetInt("HasSavedPosition", 0) == 1)
+        //if (PlayerPrefs.GetInt("HasSavedPosition", 0) == 1)
+        //{
+        //    float x = PlayerPrefs.GetFloat("TargetX");
+        //    float y = PlayerPrefs.GetFloat("TargetY");
+        //    float z = PlayerPrefs.GetFloat("TargetZ");
+
+        //    transform.position = new Vector3(x, y, z);
+        //    UnityEngine.Debug.Log($"玩家起始位置: {transform.position}");
+
+        //    // 重置存檔，避免影響之後的場景
+        //    PlayerPrefs.SetInt("HasSavedPosition", 0);
+        //    PlayerPrefs.Save();
+        //}
+      //  UnityEngine.Debug.Log(gameObject.name + " start : " + transform.position);
+    }
+
+    private void OnEnable()
+    {
+        if (bInitFirst)
         {
             float x = PlayerPrefs.GetFloat("TargetX");
             float y = PlayerPrefs.GetFloat("TargetY");
@@ -31,11 +49,8 @@ public class PlayerControl : MonoBehaviour
 
             transform.position = new Vector3(x, y, z);
             UnityEngine.Debug.Log($"玩家起始位置: {transform.position}");
-
-            // 重置存檔，避免影響之後的場景
-            PlayerPrefs.SetInt("HasSavedPosition", 0);
-            PlayerPrefs.Save();
         }
+        bInitFirst = true;
     }
 
     private void Awake()
@@ -46,6 +61,7 @@ public class PlayerControl : MonoBehaviour
 
     void Update()
     {
+        //UnityEngine.Debug.Log(gameObject.name + " Update : " + transform.position);
         ApplyGravity();
         MoveBehaviour();
     }
