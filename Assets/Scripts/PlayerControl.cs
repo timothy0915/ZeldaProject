@@ -102,8 +102,8 @@ public class PlayerControl : MonoBehaviour
             pastTime = Timer.GetTimer.GetTimeI() - focusTime + 0.7f;
             if (pastTime >= 1)
             {
-                animatorCtrl.Focus(true);
                 MoveSpeed = 2f;
+                animatorCtrl.Focus(true);
                 animatorCtrl.Attack(false, hit);
             }
         }
