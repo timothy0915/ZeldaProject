@@ -4,17 +4,20 @@ using UnityEngine;
 
 public class PlayerTransform : MonoBehaviour
 {
-   public Transform playerTransform;
+   public GameObject player;
+    public GameObject[] SpwanPoints = null;
     // Start is called before the first frame update
     void Start()
     {
         
     }
-   void Teleport(float x,float y, float z)
+    public void Spwan(int P) 
     {
-      
-        playerTransform.position = new Vector3(x,y,z);
-
+        player.transform.position = SpwanPoints[P].transform.position;
+    }
+   public void Teleport(float x,float y, float z)
+    {
+        player.transform.position = new Vector3(x,y,z);
     }
 
 }

@@ -7,7 +7,8 @@ using UnityEngine;
 
 public class PlayerControl : MonoBehaviour
 {
-   private AnimatorCtrl animatorCtrl;
+    private PlayerTransform playerTransform;
+    private AnimatorCtrl animatorCtrl;
     public float MoveSpeed = 5f;
     [Range(1, 3)] public float SprintSpeedModifier = 2;
     public float RotateSpeed = 75f;
@@ -55,8 +56,8 @@ public class PlayerControl : MonoBehaviour
             float y = PlayerPrefs.GetFloat("TargetY");
             float z = PlayerPrefs.GetFloat("TargetZ");
 
-            transform.position = new Vector3(x, y, z);
-            UnityEngine.Debug.Log($"玩家起始位置: {transform.position}");
+            playerTransform.Teleport(x, y, z);
+            UnityEngine.Debug.Log($"玩家起始位置: {x}, {y}, {z}");
         }
         bInitFirst = true;
     }

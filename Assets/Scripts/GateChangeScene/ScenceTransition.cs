@@ -10,13 +10,12 @@ public class SceneTransition : MonoBehaviour
     public GameObject player; //主角
     FadeInOut fade;//呼叫淡入淡出的控制器
     PlayerTransform playerTransform;
-
+    public int P = 0;
     private void Start()
     {
         //尋找場景中的FadeInOut組件
         fade = FindObjectOfType<FadeInOut>();
         DontDestroyOnLoad(player);
-
     }
 
     public IEnumerator ChangeScene()
@@ -26,17 +25,14 @@ public class SceneTransition : MonoBehaviour
         //等待1秒，確保淡入完成
         yield return new WaitForSeconds(1);
         // 存儲 Player 位置
-        PlayerPrefs.SetFloat("TargetX", targetPosition.x);
-        PlayerPrefs.SetFloat("TargetY", targetPosition.y);
-        PlayerPrefs.SetFloat("TargetZ", targetPosition.z);
+        PlayerPrefs.SetInt("",P);
         PlayerPrefs.SetInt("HasSavedPosition", 1); // 標記為已儲存
         PlayerPrefs.Save(); // 確保數據被保存
-        Debug.Log("座標"+targetPosition.x +  targetPosition.y+  targetPosition.z);
         // 加載目標場景
         SceneManager.LoadScene(targetSceneName);
 
         // 訂閱 SceneManager 事件，確保場景載入完成後移動 Player
-        SceneManager.sceneLoaded += OnSceneLoaded;
+        //SceneManager.sceneLoaded += OnSceneLoaded;
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -56,12 +52,9 @@ public class SceneTransition : MonoBehaviour
         if (player != null && PlayerPrefs.GetInt("HasSavedPosition", 0) == 1)
         {
             // 讀取儲存的 Player 位置
-            float x = PlayerPrefs.GetFloat("TargetX");
-            float y = PlayerPrefs.GetFloat("TargetY");
-            float z = PlayerPrefs.GetFloat("TargetZ");
-
+            int P = PlayerPrefs.GetInt("P");
             // 設定 Player 位置
-            player.transform.position = new Vector3(x, y, z);
+            playerTransform.Spwan(P);
 
            UnityEngine.Debug.Log($"玩家移動到新位置: {player.transform.position}");
 
@@ -71,12 +64,12 @@ public class SceneTransition : MonoBehaviour
         }
         else
         {
-            player.transform.position = new Vector3(32.05f, 0f, -32.51f);
+            playerTransform.Spwan(0);
             UnityEngine.Debug.Log("沒有資料，回到初始點");
 
         }
         // UnityEngine.Debug.Log(player.name + " OnSceneLoaded : " + player.transform.position);
         // 取消訂閱，防止多次觸發
-        SceneManager.sceneLoaded -= OnSceneLoaded;
+        //SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 }
