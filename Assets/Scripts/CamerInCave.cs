@@ -6,12 +6,12 @@ public class CamerInCave : MonoBehaviour
 {
     public float sensitiviy_x = 2f;
     public float sensitiviy_y = 2f;
-    public Vector3 CamOffset = new Vector3(0f, 20f, -5f);
+    public Vector3 CamOffset = new Vector3(0f, 30f, -5f);
     public Transform _target;
 
     float MinVerticalAngle = 30f;
     float MaxVerticalAngle = 80f;
-    float CameraToTargetDistance = 10f;
+    public float CameraToTargetDistance = 20f;
 
     private void Awake()
     {
