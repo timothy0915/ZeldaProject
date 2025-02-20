@@ -28,6 +28,7 @@ public class PlayerControl : MonoBehaviour
     float pastTime = 0;
     void Start()
     {
+        MoveSpeed = 5f;
         animatorCtrl = GetComponent<AnimatorCtrl>();
         // **讀取場景切換時儲存的玩家位置**
         //if (PlayerPrefs.GetInt("HasSavedPosition", 0) == 1)
