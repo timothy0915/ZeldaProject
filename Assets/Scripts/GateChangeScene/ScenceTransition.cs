@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,13 +7,16 @@ public class SceneTransition : MonoBehaviour
 {
     public string targetSceneName; // 目標場景名稱
     public Vector3 targetPosition; // 目標位置
-
+    public GameObject player; //主角
     FadeInOut fade;//呼叫淡入淡出的控制器
+    PlayerTransform playerTransform;
 
     private void Start()
     {
         //尋找場景中的FadeInOut組件
         fade = FindObjectOfType<FadeInOut>();
+        DontDestroyOnLoad(player);
+
     }
 
     public IEnumerator ChangeScene()
@@ -29,7 +31,7 @@ public class SceneTransition : MonoBehaviour
         PlayerPrefs.SetFloat("TargetZ", targetPosition.z);
         PlayerPrefs.SetInt("HasSavedPosition", 1); // 標記為已儲存
         PlayerPrefs.Save(); // 確保數據被保存
-
+        Debug.Log("座標"+targetPosition.x +  targetPosition.y+  targetPosition.z);
         // 加載目標場景
         SceneManager.LoadScene(targetSceneName);
 
@@ -61,7 +63,7 @@ public class SceneTransition : MonoBehaviour
             // 設定 Player 位置
             player.transform.position = new Vector3(x, y, z);
 
-            UnityEngine.Debug.Log($"玩家移動到新位置: {player.transform.position}");
+           UnityEngine.Debug.Log($"玩家移動到新位置: {player.transform.position}");
 
             // 重置存檔，避免下次開場景時再移動
             PlayerPrefs.SetInt("HasSavedPosition", 0);
@@ -70,9 +72,10 @@ public class SceneTransition : MonoBehaviour
         else
         {
             player.transform.position = new Vector3(32.05f, 0f, -32.51f);
+            UnityEngine.Debug.Log("沒有資料，回到初始點");
 
         }
-       // UnityEngine.Debug.Log(player.name + " OnSceneLoaded : " + player.transform.position);
+        // UnityEngine.Debug.Log(player.name + " OnSceneLoaded : " + player.transform.position);
         // 取消訂閱，防止多次觸發
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
