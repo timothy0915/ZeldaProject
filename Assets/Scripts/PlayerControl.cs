@@ -19,6 +19,12 @@ public class PlayerControl : MonoBehaviour
 
     CharacterController _cc;
     bool bInitFirst = false;
+
+    int hit = 0;
+    float hitTime = 0f;
+    float focusTime = 0f;
+    int spinTime = 0;
+    float pastTime = 0;
     void Start()
     {
         animatorCtrl = GetComponent<AnimatorCtrl>();
@@ -61,9 +67,68 @@ public class PlayerControl : MonoBehaviour
 
     void Update()
     {
-        //UnityEngine.Debug.Log(gameObject.name + " Update : " + transform.position);
         ApplyGravity();
         MoveBehaviour();
+        if (spinTime >= 1)
+         {
+                spinTime -= 1;
+                if (spinTime <= 0)
+                {
+                animatorCtrl.Spin(false);
+                }
+            }
+            if (Input.GetKeyDown(KeyCode.Mouse0))//按下左鍵(單次觸發
+            {
+                pastTime = Timer.GetTimer.GetTimeF() - hitTime;
+            /*
+                   if (k < 0.1f)
+                   {
+                       return;
+                   }
+            */
+            if (hit >= 3 || pastTime >= 3f)
+                {
+                    hit = 1;
+                }
+                else
+                {
+                    hit += 1;
+                }
+
+            animatorCtrl.Attack(true, hit);
+                //Debug.Log("在"+ pastTime + "秒後的第" + hit + "擊");
+                hitTime = focusTime = Timer.GetTimer.GetTimeF();
+            }
+            if (Input.GetKey(KeyCode.Mouse0))//按住左鍵(持續觸發
+            {
+                pastTime = Timer.GetTimer.GetTimeI() - focusTime + 0.7f;
+                if (pastTime >= 1)
+                {
+                animatorCtrl.Focus(true);
+                animatorCtrl.Attack(false, hit);
+                }
+            }
+        if (Input.GetKeyUp(KeyCode.Mouse0))//放開左鍵
+        {
+            pastTime = Timer.GetTimer.GetTimeI() - focusTime;
+            if (pastTime >= 2)
+            {
+                animatorCtrl.Spin(true);
+                spinTime = 200;
+            }
+            animatorCtrl.Focus(false);
+            animatorCtrl.Attack(false,hit);
+        }
+        if (Input.GetKeyDown(KeyCode.Mouse1))//按下右鍵
+            {
+            animatorCtrl.Defend(true);
+        }
+        if (Input.GetKeyUp(KeyCode.Mouse1))//放開右鍵
+            {
+            animatorCtrl.Defend(false);
+        }
+
+        
     }
 
     Vector3 GetMoveInput()
