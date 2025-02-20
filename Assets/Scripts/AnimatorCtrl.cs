@@ -7,17 +7,12 @@ public class AnimatorCtrl : MonoBehaviour
 {
     Animator anim;
 
+    // Invoke( "anim.SetBool("attacking", false)" ,2);這條可以延後觸發函式，之後把指令全用函式存就可以用了
     // Start is called before the first frame update
     void Start()
     {
         anim = GetComponent<Animator>();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-    }
-
     public void Move(float Speed)
     {
         anim.SetFloat("MoveSpeed", Speed);
@@ -42,16 +37,4 @@ public class AnimatorCtrl : MonoBehaviour
     {
         anim.SetBool("spinning", spin);
     }
-
-
-
-
-
-
-
-
-
-
-
-
 }

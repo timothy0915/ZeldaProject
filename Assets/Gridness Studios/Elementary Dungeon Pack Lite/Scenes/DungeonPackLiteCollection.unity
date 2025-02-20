@@ -1448,7 +1448,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogBox: {fileID: 1671674455}
   dialogText: {fileID: 1491481958}
-  dialog: Pond Ahead
+  dialog: Fly me 2 the moon
   playerInRange: 0
 --- !u!65 &1108820015
 BoxCollider:
