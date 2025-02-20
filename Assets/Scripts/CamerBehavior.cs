@@ -8,9 +8,6 @@ public class CameraBehavior : MonoBehaviour
     public float sensitiviy_y = 2f;
     public Vector3 CamOffset = new Vector3(0f, 20f, -5f);
     public Transform _target;
-
-    float MinVerticalAngle = 30f;
-    float MaxVerticalAngle = 80f;
     float CameraToTargetDistance = 35f;
 
     private void Awake()

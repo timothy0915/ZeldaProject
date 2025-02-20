@@ -1,18 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerControl : MonoBehaviour
 {
-    private Animator animator;
+   private AnimatorCtrl animatorCtrl;
     public float MoveSpeed = 10f;
     [Range(1, 3)] public float SprintSpeedModifier = 2;
     public float RotateSpeed = 75f;
     private float gravity = 20f;
-    private float DistanceToGround = 0.1f;
     public float addSpeedRatio = 0.05f;
-    private bool isRun = false;
 
     public Vector3 Velocity;
     Vector3 TargetMovement;
@@ -22,6 +21,7 @@ public class PlayerControl : MonoBehaviour
     bool bInitFirst = false;
     void Start()
     {
+        animatorCtrl = GetComponent<AnimatorCtrl>();
         // **讀取場景切換時儲存的玩家位置**
         //if (PlayerPrefs.GetInt("HasSavedPosition", 0) == 1)
         //{
@@ -55,7 +55,7 @@ public class PlayerControl : MonoBehaviour
 
     private void Awake()
     {
-        animator = GetComponent<Animator>();
+     //   animator = GetComponent<Animator>();
         _cc = GetComponent<CharacterController>();
     }
 
@@ -84,19 +84,12 @@ public class PlayerControl : MonoBehaviour
         if (TargetMovement == Vector3.zero)
         {
             nextFrameSpeed = 0f;
-            animator.SetFloat("MoveSpeed", 0f);
+            animatorCtrl.Move(0f);
         }
         else
         {
             SmoothRotation(TargetMovement);
-            animator.SetFloat("MoveSpeed", 0.5f);
-        }
-
-        if (IsRun())
-        {
-            nextFrameSpeed = 1f;
-            TargetMovement *= SprintSpeedModifier;
-            SmoothRotation(TargetMovement);
+            animatorCtrl.Move(0.5f);
         }
 
         if (lastFrameSpeed != nextFrameSpeed)
@@ -125,8 +118,5 @@ public class PlayerControl : MonoBehaviour
         _cc.Move(Velocity * Time.deltaTime);
     }
 
-    private bool IsRun()
-    {
-        return Input.GetKey(KeyCode.Space);
-    }
+    
 }
