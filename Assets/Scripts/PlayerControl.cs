@@ -13,7 +13,6 @@ public class PlayerControl : MonoBehaviour
     public float RotateSpeed = 75f;
     private float gravity = 20f;
     public float addSpeedRatio = 0.05f;
-
     public Vector3 Velocity;
     Vector3 TargetMovement;
     float lastFrameSpeed;
@@ -123,11 +122,13 @@ public class PlayerControl : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Mouse1))//´ˆ§U•k¡‰
         {
             MoveSpeed = 2f;
+           // canRotate = false;
             animatorCtrl.Defend(true);
         }
         if (Input.GetKeyUp(KeyCode.Mouse1))//©Ò∂}•k¡‰
         {
             MoveSpeed = 5f;
+          //  canRotate = true;
             animatorCtrl.Defend(false);
         }
     }
