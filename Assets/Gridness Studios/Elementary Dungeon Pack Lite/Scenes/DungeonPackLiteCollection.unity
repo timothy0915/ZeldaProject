@@ -776,6 +776,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7927401327688270480, guid: 5c34461b69ee34041ba8b690de8618e8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 563181207}
+    - targetCorrespondingSourceObject: {fileID: 7927401327688270480, guid: 5c34461b69ee34041ba8b690de8618e8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 563181208}
   m_SourcePrefab: {fileID: 100100000, guid: 5c34461b69ee34041ba8b690de8618e8, type: 3}
 --- !u!1 &563181205 stripped
 GameObject:
@@ -789,7 +792,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 563181205}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1f88745df4c776a428bc1bec020f3058, type: 3}
   m_Name: 
@@ -812,6 +815,20 @@ MonoBehaviour:
   fadein: 0
   fadeout: 0
   TimeToFade: 1
+--- !u!114 &563181208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 563181205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f90a582bcc050084588caab72f4049ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneToLoad: BigIsland
+  exitName: DungeonPackLiteCollection1
 --- !u!4 &599033785 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 668735768885291391, guid: 91ad7bf144749b04ab484a680630a040, type: 3}
@@ -2771,6 +2788,10 @@ PrefabInstance:
       value: MaleCharacterPBR
       objectReference: {fileID: 0}
     - target: {fileID: 8189980434977739222, guid: 2dfbb63c9cdf7504faf4ff26b0581598, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8189980434977739222, guid: 2dfbb63c9cdf7504faf4ff26b0581598, type: 3}
       propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
@@ -2784,7 +2805,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8855052669661678444, guid: 2dfbb63c9cdf7504faf4ff26b0581598, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -7.21
+      value: -7.51
       objectReference: {fileID: 0}
     - target: {fileID: 8855052669661678444, guid: 2dfbb63c9cdf7504faf4ff26b0581598, type: 3}
       propertyPath: m_LocalRotation.w
