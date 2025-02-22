@@ -37,4 +37,12 @@ public class AnimatorCtrl : MonoBehaviour
     {
         anim.SetBool("spinning", spin);
     }
+    public void Ground(bool ground)
+    {
+        anim.SetBool("grounded", ground);
+    }
+    public void Jump(bool jump)
+    {
+        anim.SetBool("jumping", jump);
+    }
 }

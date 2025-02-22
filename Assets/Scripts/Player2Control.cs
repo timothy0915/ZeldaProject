@@ -11,7 +11,7 @@ public class Player2Control : MonoBehaviour
     public float MoveSpeed = 5f;
     [Range(1, 3)] public float SprintSpeedModifier = 2;
     public float RotateSpeed = 75f;
-    private float gravity = 20f;
+    private float gravity = 15f;
     public float addSpeedRatio = 0.05f;
     public Vector3 Velocity;
     float lastFrameSpeed;
@@ -29,6 +29,7 @@ public class Player2Control : MonoBehaviour
     public bool canRotate = true; // 是否允許旋轉
 
     private Vector3 moveDirection;
+    public float jumpHeight = 4f;
     void Start()
     {
         speed = 5f;
@@ -135,12 +136,15 @@ public class Player2Control : MonoBehaviour
             canRotate = true;
             animatorCtrl.Defend(false);
         }
+        if (Input.GetKey(KeyCode.Space) &&　controller.isGrounded)
+        {
+            Velocity.y = Mathf.Sqrt(jumpHeight * 2f * gravity);
+            animatorCtrl.Jump(true);
+        }
     }
     void MaybeRo()
     {
         // 取得水平與垂直輸入 (WASD 或方向鍵)
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
 
         // 計算移動方向
         moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
@@ -190,6 +194,8 @@ public class Player2Control : MonoBehaviour
         if (controller.isGrounded)
         {
             Velocity.y = -0.05f;
+            animatorCtrl.Jump(false);
+            animatorCtrl.Ground(true);
         }
         else
         {
