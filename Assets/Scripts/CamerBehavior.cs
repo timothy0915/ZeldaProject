@@ -15,6 +15,7 @@ public class CameraBehavior : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         CamOffset = new Vector3(0f, 20f, -5f);
+        transform.LookAt(_target.position + Vector3.up * 1.5f);
     }
 
     void LateUpdate()

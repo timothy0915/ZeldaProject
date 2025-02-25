@@ -1,38 +1,46 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public class DistanceTrace : MonoBehaviour
 {
-    public Transform CamPoint;
-    public Transform player;
-    private float distance;
-    Vector3 direction;
-    public float moveSpeed =5f; // 玩家移動速度
-    bool ifOut;
-    // Start is called before the first frame update
-    void Start()
-    {
-        moveSpeed = 5f;
-        ifOut=false;
-    }
+    public Transform CamPoint;  // 鏡頭跟隨點
+    public Transform player;    // 玩家
+    public float moveSpeed = 5f;
+    public float followThreshold = 5f;  // 超過這個距離才開始移動
+    public float stopThreshold = 2f;    // 接近到這個距離後停止移動
+    public float lerpSpeed = 5f;        // 用於平滑移動
+    private bool ifOut = false;         // 是否超出範圍
 
-    // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
         if (player == null) return;
-        distance = (player.position - CamPoint.position).magnitude;
-        Debug.Log("distance=" + distance);
-        if (distance > 5f) ifOut = true;
+
+        float distance = Vector3.Distance(player.position, CamPoint.position);
+
+        if (distance > followThreshold)
+            ifOut = true;
+
         if (ifOut)
-        { 
-        direction = (player.transform.position - CamPoint.transform.position).normalized;
-        CamPoint.transform.LookAt(player.transform.position);
-        CamPoint.transform.position += direction * moveSpeed * Time.deltaTime;
-            if (distance < 2f) ifOut = false;
+        {
+            Debug.Log(player.position.y);
+            //CamPoint.position = player.position;//直接移動
+            // 平滑移動至玩家位置
+            CamPoint.position = Vector3.Lerp(CamPoint.position, player.position, Mathf.Clamp01(lerpSpeed * Time.deltaTime));
+
+            
+            // 讓鏡頭只對齊 `Y` 軸，避免多餘震動
+            //CamPoint.position = new Vector3(CamPoint.position.x, player.position.y, CamPoint.position.z);
+
+            // 讓鏡頭面向 `Player`
+            //CamPoint.LookAt(player.position);
+
+            // 若距離小於 `stopThreshold` 則停止移動
+            if (distance < stopThreshold)
+                ifOut = false;
         }
-        
-        
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawSphere(CamPoint.position, 1);
     }
 }

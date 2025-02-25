@@ -34,24 +34,25 @@ public class Player2Control : MonoBehaviour
     {
         speed = 5f;
         animatorCtrl = GetComponent<AnimatorCtrl>();
-        // **讀取場景切換時儲存的玩家位置**
-        //if (PlayerPrefs.GetInt("HasSavedPosition", 0) == 1)
-        //{
-        //    float x = PlayerPrefs.GetFloat("TargetX");
-        //    float y = PlayerPrefs.GetFloat("TargetY");
-        //    float z = PlayerPrefs.GetFloat("TargetZ");
+        Velocity = Vector3.zero;
+    // **讀取場景切換時儲存的玩家位置**
+    //if (PlayerPrefs.GetInt("HasSavedPosition", 0) == 1)
+    //{
+    //    float x = PlayerPrefs.GetFloat("TargetX");
+    //    float y = PlayerPrefs.GetFloat("TargetY");
+    //    float z = PlayerPrefs.GetFloat("TargetZ");
 
-        //    transform.position = new Vector3(x, y, z);
-        //    UnityEngine.Debug.Log($"玩家起始位置: {transform.position}");
+    //    transform.position = new Vector3(x, y, z);
+    //    UnityEngine.Debug.Log($"玩家起始位置: {transform.position}");
 
-        //    // 重置存檔，避免影響之後的場景
-        //    PlayerPrefs.SetInt("HasSavedPosition", 0);
-        //    PlayerPrefs.Save();
-        //}
-        //  UnityEngine.Debug.Log(gameObject.name + " start : " + transform.position);
-    }
+    //    // 重置存檔，避免影響之後的場景
+    //    PlayerPrefs.SetInt("HasSavedPosition", 0);
+    //    PlayerPrefs.Save();
+    //}
+    //  UnityEngine.Debug.Log(gameObject.name + " start : " + transform.position);
+}
 
-    private void OnEnable()
+private void OnEnable()
     {
         if (bInitFirst)
         {
@@ -73,9 +74,10 @@ public class Player2Control : MonoBehaviour
 
     void Update()
     {
-        ApplyGravity();
         MaybeRo();
         ActionApplied();
+        ApplyGravity();
+        Jump();
     }
     void ActionApplied()
     {
@@ -136,10 +138,17 @@ public class Player2Control : MonoBehaviour
             canRotate = true;
             animatorCtrl.Defend(false);
         }
-        if (Input.GetKey(KeyCode.Space) &&　controller.isGrounded)
+        
+    }
+    void Jump()
+    {
+        UnityEngine.Debug.Log("jumpUnity"+ controller.isGrounded);
+        if (Input.GetKey(KeyCode.Space) && controller.isGrounded)
         {
+
             Velocity.y = Mathf.Sqrt(jumpHeight * 2f * gravity);
-            animatorCtrl.Jump(true);
+           UnityEngine.Debug.Log("jump");
+            animatorCtrl.Jump(true); 
         }
     }
     void MaybeRo()
@@ -191,6 +200,7 @@ public class Player2Control : MonoBehaviour
 
     void ApplyGravity()
     {
+        UnityEngine.Debug.Log("it's Ground0" + controller.isGrounded);
         if (controller.isGrounded)
         {
             Velocity.y = -0.05f;
@@ -200,7 +210,13 @@ public class Player2Control : MonoBehaviour
         else
         {
             Velocity.y -= gravity * Time.deltaTime;
+            controller.Move(Velocity * Time.deltaTime);
         }
-        controller.Move(Velocity * Time.deltaTime);
+        UnityEngine.Debug.Log(Velocity);
+
+        
+        UnityEngine.Debug.Log("it's Ground" +controller.isGrounded);
     }
+    void ApplyMove()
+    { }
 }
