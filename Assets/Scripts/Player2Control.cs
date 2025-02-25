@@ -15,7 +15,7 @@ public class Player2Control : MonoBehaviour
     public float addSpeedRatio = 0.05f;
     public Vector3 Velocity;
     float lastFrameSpeed;
-
+    public Vector3 movement;
     CharacterController controller;
     bool bInitFirst = false;
 
@@ -30,6 +30,7 @@ public class Player2Control : MonoBehaviour
 
     private Vector3 moveDirection;
     public float jumpHeight = 4f;
+    public GameObject shadow;
     void Start()
     {
         speed = 5f;
@@ -74,10 +75,12 @@ private void OnEnable()
 
     void Update()
     {
-        MaybeRo();
-        ActionApplied();
         ApplyGravity();
-        Jump();
+        MaybeRo();
+        Dash();
+        ActionApplied();
+        //Jump();
+        ApplyMove();
     }
     void ActionApplied()
     {
@@ -151,6 +154,19 @@ private void OnEnable()
             animatorCtrl.Jump(true); 
         }
     }
+    void Dash()
+    {
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            if (shadow != null)
+            {
+                shadow.transform.position = this.transform.position;
+                shadow.transform.rotation = this.transform.rotation;
+                shadow.SetActive(true);
+                this.gameObject.SetActive(false);
+            }
+        }
+    }
     void MaybeRo()
     {
         // 取得水平與垂直輸入 (WASD 或方向鍵)
@@ -182,7 +198,7 @@ private void OnEnable()
         // 讓角色移動
         if (moveDirection.magnitude >= 0.1f)
         {
-            controller.Move(moveDirection * speed * Time.deltaTime);
+            movement += (moveDirection * speed * Time.deltaTime);
 
             // **修正：只有當 canRotate 為 true 時，角色才會轉向**
             if (canRotate)
@@ -203,14 +219,15 @@ private void OnEnable()
         UnityEngine.Debug.Log("it's Ground0" + controller.isGrounded);
         if (controller.isGrounded)
         {
-            Velocity.y = -0.05f;
+            Velocity.y = -0.001f;
             animatorCtrl.Jump(false);
             animatorCtrl.Ground(true);
         }
         else
         {
             Velocity.y -= gravity * Time.deltaTime;
-            controller.Move(Velocity * Time.deltaTime);
+            
+            movement += (Velocity * Time.deltaTime);
         }
         UnityEngine.Debug.Log(Velocity);
 
@@ -218,5 +235,8 @@ private void OnEnable()
         UnityEngine.Debug.Log("it's Ground" +controller.isGrounded);
     }
     void ApplyMove()
-    { }
+    {
+        controller.Move(movement);
+        movement = Vector3.zero;
+    }
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class SwordAttack : MonoBehaviour
 {
     public Collider hitCollider;  // 指定要開啟的碰撞箱
+    public Animator animator;
 
     private void Start()
     {
@@ -33,7 +34,7 @@ public class SwordAttack : MonoBehaviour
 
             if (rb != null)
             {
-                Destroy(other.gameObject);
+                //other.HP-=1;
             }
         }
     }

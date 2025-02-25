@@ -41,6 +41,6 @@ public class DistanceTrace : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawSphere(CamPoint.position, 1);
+       // Gizmos.DrawSphere(CamPoint.position, 1);
     }
 }

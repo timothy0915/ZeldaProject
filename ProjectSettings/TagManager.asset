@@ -8,6 +8,8 @@ TagManager:
   - enemy
   - Wall
   - Grass
+  - Ground
+  - Tree
   layers:
   - Default
   - TransparentFX

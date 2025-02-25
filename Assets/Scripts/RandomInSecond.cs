@@ -18,7 +18,7 @@ public class RandomInSecond : MonoBehaviour
     {
         if (i != Timer.GetTimer.GetTimeI())
         {
-            anim.SetFloat("random", Random.Range(1,10));
+            anim.speed = Random.Range(1, 10) / 10;
             i = Timer.GetTimer.GetTimeI();
         }
     }
