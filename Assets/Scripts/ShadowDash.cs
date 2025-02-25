@@ -24,8 +24,7 @@ public class ShadowDash : MonoBehaviour
        
         if (timerI != 0)
         {
-            this.transform.position += transform.forward * speed* Time.deltaTime;
-
+            this.transform.position += transform.forward * speed* Time.deltaTime+new Vector3(0, speed * Time.deltaTime, 0);
             if (Timer.GetTimer.timer_i - timerI >= dashTime)
             {
                 timerI = 0;

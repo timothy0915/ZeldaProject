@@ -22,7 +22,7 @@ public class Player2Control : MonoBehaviour
     int hit = 0;
     float hitTime = 0f;
     float focusTime = 0f;
-    int spinTime = 0;
+    //int spinTime = 0;
     float pastTime = 0;
     public float speed = 5f;
     public float rotationSpeed = 720f; // 旋轉速度
@@ -31,6 +31,8 @@ public class Player2Control : MonoBehaviour
     private Vector3 moveDirection;
     public float jumpHeight = 4f;
     public GameObject shadow;
+    public GameObject shotSword;
+
     void Start()
     {
         speed = 5f;
@@ -84,14 +86,14 @@ private void OnEnable()
     }
     void ActionApplied()
     {
-        if (spinTime >= 1)
+      /*  if (spinTime >= 1)
         {
             spinTime -= 1;
             if (spinTime <= 0)
             {
                 animatorCtrl.Spin(false);
             }
-        }
+        }*/
         if (Input.GetKeyDown(KeyCode.Mouse0))//按下左鍵(單次觸發
         {
             pastTime = Timer.GetTimer.GetTimeF() - hitTime;
@@ -122,8 +124,11 @@ private void OnEnable()
             pastTime = Timer.GetTimer.GetTimeI() - focusTime;
             if (pastTime >= 2)
             {
-                animatorCtrl.Spin(true);
-                spinTime = 200;
+                //    animatorCtrl.Spin(true);
+                //    spinTime = 200;
+                shotSword.transform.position = this.transform.position;
+                shotSword.transform.rotation = this.transform.rotation;
+                shotSword.SetActive(true);
             }
             speed = 5f;
             animatorCtrl.Focus(false);
