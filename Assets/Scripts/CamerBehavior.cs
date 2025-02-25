@@ -14,15 +14,16 @@ public class CameraBehavior : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        if (CamOffset != new Vector3(0f, 20f, -5f))
+        {
+            CamOffset = new Vector3(0f, 20f, -5f);
+        }
     }
 
     void LateUpdate()
     {
         if (_target == null) return;
-        if (  CamOffset != new Vector3(0f, 20f, -5f))
-        {
-            CamOffset = new Vector3(0f, 20f, -5f);
-}
+      
         // **保持攝影機跟隨 Player**
         transform.LookAt(_target.position + Vector3.up * 1.5f);
         transform.position = new Vector3(0, 0, -CameraToTargetDistance) + _target.position + Vector3.up * CamOffset.y;
