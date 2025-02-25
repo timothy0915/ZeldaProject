@@ -18,10 +18,10 @@ MonoBehaviour:
     m_Value: {x: 1, y: 1, z: 1, w: 3.607035e-10}
   gamma:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 1, z: 1, w: -0.1854646}
+    m_Value: {x: 1, y: 1, z: 1, w: -0.21328102}
   gain:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 1, z: 1, w: 0.26387078}
+    m_Value: {x: 1, y: 1, z: 1, w: 0.20862286}
 --- !u!114 &-3969488579639410846
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -89,7 +89,7 @@ MonoBehaviour:
     m_Value: 0
   intensity:
     m_OverrideState: 1
-    m_Value: 0.45
+    m_Value: 0.5
   scatter:
     m_OverrideState: 1
     m_Value: 0.81
@@ -141,10 +141,10 @@ MonoBehaviour:
     m_Value: 1
   upperHemisphereLuxValue:
     m_OverrideState: 1
-    m_Value: 0.46607146
+    m_Value: 0.4660715
   upperHemisphereLuxColor:
     m_OverrideState: 1
-    m_Value: {x: 0.18750615, y: 0.29181966, z: 0.5}
+    m_Value: {x: 0.18750614, y: 0.29181972, z: 0.5}
   desiredLuxValue:
     m_OverrideState: 1
     m_Value: 25000
@@ -159,7 +159,7 @@ MonoBehaviour:
     m_Value: 0
   hdriSky:
     m_OverrideState: 1
-    m_Value: {fileID: 8900000, guid: 83696284ef08fb24998c46589d5ca625, type: 3}
+    m_Value: {fileID: 8900000, guid: ccca8b4dc17127f4ab681184073781e6, type: 3}
   distortionMode:
     m_OverrideState: 0
     m_Value: 0
@@ -333,7 +333,7 @@ MonoBehaviour:
   interCascadeBorders: 1
   maxShadowDistance:
     m_OverrideState: 1
-    m_Value: 100
+    m_Value: 400
   directionalTransmissionMultiplier:
     m_OverrideState: 0
     m_Value: 1
@@ -753,9 +753,6 @@ MonoBehaviour:
   mode:
     m_OverrideState: 1
     m_Value: 2
-  useFullACES:
-    m_OverrideState: 0
-    m_Value: 0
   toeStrength:
     m_OverrideState: 0
     m_Value: 0
@@ -780,30 +777,3 @@ MonoBehaviour:
   lutContribution:
     m_OverrideState: 0
     m_Value: 1
-  neutralHDRRangeReductionMode:
-    m_OverrideState: 0
-    m_Value: 2
-  acesPreset:
-    m_OverrideState: 0
-    m_Value: 3
-  fallbackMode:
-    m_OverrideState: 0
-    m_Value: 1
-  hueShiftAmount:
-    m_OverrideState: 0
-    m_Value: 0
-  detectPaperWhite:
-    m_OverrideState: 0
-    m_Value: 0
-  paperWhite:
-    m_OverrideState: 0
-    m_Value: 300
-  detectBrightnessLimits:
-    m_OverrideState: 0
-    m_Value: 1
-  minNits:
-    m_OverrideState: 0
-    m_Value: 0.005
-  maxNits:
-    m_OverrideState: 0
-    m_Value: 1000
