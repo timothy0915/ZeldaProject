@@ -31,6 +31,7 @@ public class Player2Control : MonoBehaviour
     private Vector3 moveDirection;
     public float jumpHeight = 4f;
     public GameObject shadow;
+    public GameObject ShotSword;
     void Start()
     {
         speed = 5f;
@@ -114,6 +115,7 @@ private void OnEnable()
             {
                 speed = 2f;
                 animatorCtrl.Focus(true);
+                
                 animatorCtrl.Attack(false, hit);
             }
         }
@@ -122,8 +124,14 @@ private void OnEnable()
             pastTime = Timer.GetTimer.GetTimeI() - focusTime;
             if (pastTime >= 2)
             {
-                animatorCtrl.Spin(true);
-                spinTime = 200;
+                //animatorCtrl.Spin(true);
+                //spinTime = 200;
+                if (ShotSword != null)
+                {
+                    ShotSword.transform.position = this.transform.position+transform.forward;
+                    ShotSword.transform.rotation = this.transform.rotation;
+                    ShotSword.SetActive(true);
+                }
             }
             speed = 5f;
             animatorCtrl.Focus(false);
@@ -216,7 +224,7 @@ private void OnEnable()
 
     void ApplyGravity()
     {
-        UnityEngine.Debug.Log("it's Ground0" + controller.isGrounded);
+        //UnityEngine.Debug.Log("it's Ground0" + controller.isGrounded);
         if (controller.isGrounded)
         {
             Velocity.y = -0.001f;
@@ -229,10 +237,10 @@ private void OnEnable()
             
             movement += (Velocity * Time.deltaTime);
         }
-        UnityEngine.Debug.Log(Velocity);
+      //  UnityEngine.Debug.Log(Velocity);
 
         
-        UnityEngine.Debug.Log("it's Ground" +controller.isGrounded);
+        //UnityEngine.Debug.Log("it's Ground" +controller.isGrounded);
     }
     void ApplyMove()
     {
