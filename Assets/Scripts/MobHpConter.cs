@@ -20,13 +20,13 @@ public class MobHpConter : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // 只影響標籤為 "Enemy" 或 "Rock" 的物體
-        if (other.CompareTag("Sword") || other.CompareTag("Sheld"))
+        if (other.CompareTag("Sword") || other.CompareTag("Sheld")|| other.CompareTag("VoidSword"))
         {
             Rigidbody rb = other.GetComponent<Rigidbody>();
             if (rb != null)
             {
                 Debug.Log(rb);
-                if (other.CompareTag("Sword"))
+                if (other.CompareTag("Sword")|| other.CompareTag("VoidSword"))
                 {
                     UnityEngine.Debug.Log("Ouch");
                     if (Timer.GetTimer.timer_i - TimeI >= 1)

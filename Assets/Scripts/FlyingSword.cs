@@ -6,7 +6,7 @@ public class FlyingSword : MonoBehaviour
 {
     public BoxCollider boxCollider;
     int timerI;
-    float flyTime = 5f;
+    float flyTime = 3f;
     float speed = 10f;
     // Start is called before the first frame update
     void Start()
@@ -36,7 +36,11 @@ public class FlyingSword : MonoBehaviour
         // 只影響標籤為 "Enemy" 或 "Rock" 的物體
         if (other.CompareTag("Enemy") || other.CompareTag("Trap"))
         {
-            this.transform.position += new Vector3(0, speed * Time.deltaTime, 0);
+            if (other.CompareTag("Trap"))
+            {
+               Debug.Log("Boom");
+               Destroy(other.gameObject);
+            }
         }
     }
 }

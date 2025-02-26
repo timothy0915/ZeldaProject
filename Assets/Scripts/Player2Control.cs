@@ -32,6 +32,7 @@ public class Player2Control : MonoBehaviour
     public float jumpHeight = 4f;
     public GameObject shadow;
     public GameObject ShotSword;
+    public Transform SpwnPoint;
     void Start()
     {
         speed = 5f;
@@ -128,8 +129,9 @@ private void OnEnable()
                 //spinTime = 200;
                 if (ShotSword != null)
                 {
-                    ShotSword.transform.position = this.transform.position+transform.forward+new Vector3(0,1,0);
-                    ShotSword.transform.rotation = this.transform.rotation;
+                    ShotSword.SetActive(false);
+                    ShotSword.transform.position = SpwnPoint.position+ SpwnPoint.forward;
+                    ShotSword.transform.rotation = transform.rotation;
                     ShotSword.SetActive(true);
                 }
             }
@@ -140,7 +142,7 @@ private void OnEnable()
         if (Input.GetKeyDown(KeyCode.Mouse1))//´ˆ§U•k¡‰
         {
             speed = 2f;
-             canRotate = false;
+            canRotate = false;
             animatorCtrl.Defend(true);
         }
         if (Input.GetKeyUp(KeyCode.Mouse1))//©Ò∂}•k¡‰
