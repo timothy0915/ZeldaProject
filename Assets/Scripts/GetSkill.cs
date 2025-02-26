@@ -12,8 +12,8 @@ public class GetSkill : MonoBehaviour
     // Start is called before the first frame update
     void Update()
     {
-        // 當玩家按下 F 鍵且在觸發範圍內時
-        if (Input.GetKeyDown(KeyCode.F) && playerInRange)
+        // 當玩家按下 X 鍵且在觸發範圍內時
+        if (Input.GetKeyDown(KeyCode.X) && playerInRange)
         {
             // 切換對話框的顯示狀態
             dialogBox.SetActive(!dialogBox.activeInHierarchy);
