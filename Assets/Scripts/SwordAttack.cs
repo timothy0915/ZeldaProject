@@ -7,6 +7,7 @@ public class SwordAttack : MonoBehaviour
     public Collider hitCollider;  // 指定要開啟的碰撞箱
     public Animator animator;
 
+
     private void Start()
     {
         hitCollider.enabled = false; // 一開始關閉碰撞箱
@@ -34,7 +35,7 @@ public class SwordAttack : MonoBehaviour
 
             if (rb != null)
             {
-                //other.HP-=1;
+              
             }
         }
     }

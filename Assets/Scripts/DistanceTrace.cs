@@ -21,7 +21,7 @@ public class DistanceTrace : MonoBehaviour
 
         if (ifOut)
         {
-            Debug.Log(player.position.y);
+            //Debug.Log(player.position.y);
             //CamPoint.position = player.position;//直接移動
             // 平滑移動至玩家位置
             CamPoint.position = Vector3.Lerp(CamPoint.position, player.position, Mathf.Clamp01(lerpSpeed * Time.deltaTime));

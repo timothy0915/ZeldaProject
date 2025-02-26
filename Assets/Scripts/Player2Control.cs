@@ -128,7 +128,7 @@ private void OnEnable()
                 //spinTime = 200;
                 if (ShotSword != null)
                 {
-                    ShotSword.transform.position = this.transform.position+transform.forward;
+                    ShotSword.transform.position = this.transform.position+transform.forward+new Vector3(0,1,0);
                     ShotSword.transform.rotation = this.transform.rotation;
                     ShotSword.SetActive(true);
                 }
@@ -164,7 +164,7 @@ private void OnEnable()
     }
     void Dash()
     {
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.R))
         {
             if (shadow != null)
             {
