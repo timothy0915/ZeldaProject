@@ -7,14 +7,9 @@ TagManager:
   - GetSkill
   - enemy
   - Wall
-  - Ground
-  - Tree
   - Sword
   - Sheld
-  - Rock
-  - Grass
   - Trap
-  - VoidSword
   layers:
   - Default
   - TransparentFX
