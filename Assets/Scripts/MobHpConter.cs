@@ -28,7 +28,7 @@ public class MobHpConter : MonoBehaviour
                 Debug.Log(rb);
                 if (other.CompareTag("Sword")|| other.CompareTag("VoidSword"))
                 {
-                    UnityEngine.Debug.Log("Ouch");
+                   Debug.Log("Ouch");
                     if (Timer.GetTimer.timer_i - TimeI >= 1)
                     {
                         animator.SetBool("getHit", true);
