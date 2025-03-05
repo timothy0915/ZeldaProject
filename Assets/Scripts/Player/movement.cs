@@ -14,7 +14,7 @@ public class movement : MonoBehaviour
 
     [Header("Ground Check")]
     public Transform ground_check; // 角色腳下的檢測點，用來判斷是否著地
-    public float ground_distance = 0.4f; // 地面檢測範圍
+    public float ground_distance = 0.5f; // 地面檢測範圍
     public LayerMask ground_mask; // 設定哪種層級是地面（用來檢測角色是否在地面上）
 
     [Header("Slope Handling")]
@@ -33,7 +33,7 @@ public class movement : MonoBehaviour
     void Update()
     {
         // **檢測角色是否在地面上**
-        isGrounded = Physics.CheckSphere(ground_check.position, ground_distance, ground_mask);
+        isGrounded = controller.isGrounded || Physics.Raycast(transform.position, Vector3.down, out _, ground_distance + 0.1f, ground_mask);
         if (isGrounded && velocity.y < 0)
         {
             velocity.y = -2.0f; // 讓角色緊貼地面，避免不必要的浮動
