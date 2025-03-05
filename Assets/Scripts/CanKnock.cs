@@ -2,25 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public Animator animator;
-public Collider hitCollider;  // 要撞的collider
-public class Canknock : MonoBehaviour
 
-{
+public class CanKnock : MonoBehaviour
+{    
+    public Animator animator;
+    public Collider hitCollider;  // 要撞的collider
+
     // Start is called before the first frame update
     void Start()
     {
         animator.SetBool("isDead", false);
         animator.SetBool("getHit", false);
     }
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other);
          Rigidbody rb = other.GetComponent<Rigidbody>();
      if (other.CompareTag("Sheld"))
             animator.SetBool("isDefend", true);
      if (other.CompareTag("Sheld")) animator.SetBool("isDefend", true);
 }
+
 // Update is called once per frame
-void Update()
+static void Update()
     {
         
     }
