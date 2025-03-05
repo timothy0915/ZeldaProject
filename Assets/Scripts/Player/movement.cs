@@ -14,7 +14,7 @@ public class movement : MonoBehaviour
 
     [Header("Ground Check")]
     public Transform ground_check; // 角色腳下的檢測點，用來判斷是否著地
-    public float ground_distance = 0.4f; // 地面檢測範圍
+    public float ground_distance = 0.5f; // 地面檢測範圍
     public LayerMask ground_mask; // 設定哪種層級是地面（用來檢測角色是否在地面上）
 
     [Header("Slope Handling")]
@@ -33,7 +33,7 @@ public class movement : MonoBehaviour
     void Update()
     {
         // **檢測角色是否在地面上**
-        isGrounded = Physics.CheckSphere(ground_check.position, ground_distance, ground_mask);
+        isGrounded = controller.isGrounded || Physics.Raycast(transform.position, Vector3.down, out _, ground_distance + 0.1f, ground_mask);
         if (isGrounded && velocity.y < 0)
         {
             velocity.y = -2.0f; // 讓角色緊貼地面，避免不必要的浮動
@@ -58,12 +58,24 @@ public class movement : MonoBehaviour
         if (moveDirection != Vector3.zero) // 如果有輸入移動鍵
         {
             transform.rotation = Quaternion.LookRotation(moveDirection); // 角色朝向移動方向
-            animator.SetBool("IsRun", true); // 播放跑步動畫
+            animator.SetFloat("MoveSpeed", speed); // 播放跑步動畫
             controller.Move(finalMove * Time.deltaTime); // 角色移動
         }
         else
         {
-            animator.SetBool("IsRun", false); // 停止跑步動畫
+            animator.SetFloat("MoveSpeed", 0); // 停止跑步動畫
+        }
+        if (Input.GetKeyDown(KeyCode.Mouse0))//按下左鍵攻擊
+        {
+            animator.SetTrigger("attack");
+        }
+        if (Input.GetKeyDown(KeyCode.Mouse1))//按下右鍵防禦
+        {
+            animator.SetBool("defend",true);
+        }
+        if (Input.GetKeyUp(KeyCode.Mouse1))//放開右鍵復原
+        {
+            animator.SetBool("defend", false);
         }
 
         // **跳躍邏輯**

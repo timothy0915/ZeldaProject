@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 11154864}
   - component: {fileID: 7093637977897086901}
   - component: {fileID: 4341680918384353322}
-  - component: {fileID: 371621889294952399}
   m_Layer: 0
   m_Name: Pf_Trap_Cutter
   m_TagString: Trap
@@ -102,18 +101,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1.7626382, z: 1}
   m_Center: {x: 0, y: 0.3813191, z: 0}
---- !u!114 &371621889294952399
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 154860}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 239d7ccda10708942b2621a24c043cbf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &154862
 GameObject:
   m_ObjectHideFlags: 0
