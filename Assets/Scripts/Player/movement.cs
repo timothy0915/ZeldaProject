@@ -58,12 +58,24 @@ public class movement : MonoBehaviour
         if (moveDirection != Vector3.zero) // 如果有輸入移動鍵
         {
             transform.rotation = Quaternion.LookRotation(moveDirection); // 角色朝向移動方向
-            animator.SetBool("IsRun", true); // 播放跑步動畫
+            animator.SetFloat("MoveSpeed", speed); // 播放跑步動畫
             controller.Move(finalMove * Time.deltaTime); // 角色移動
         }
         else
         {
-            animator.SetBool("IsRun", false); // 停止跑步動畫
+            animator.SetFloat("MoveSpeed", 0); // 停止跑步動畫
+        }
+        if (Input.GetKeyDown(KeyCode.Mouse0))//按下左鍵攻擊
+        {
+            animator.SetTrigger("attack");
+        }
+        if (Input.GetKeyDown(KeyCode.Mouse1))//按下右鍵防禦
+        {
+            animator.SetBool("defend",true);
+        }
+        if (Input.GetKeyUp(KeyCode.Mouse1))//放開右鍵復原
+        {
+            animator.SetBool("defend", false);
         }
 
         // **跳躍邏輯**
