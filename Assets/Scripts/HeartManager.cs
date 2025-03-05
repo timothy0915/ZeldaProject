@@ -10,11 +10,13 @@ public class HeartManager : MonoBehaviour
     public Sprite halfFullHeart;
     public Sprite emptyHeart;
     public FloatValue heartContainers;
-
+    public Animator animator;
+    public Collider hitCollider;  // ­n¼²ªºcollider
     // Start is called before the first frame update
     void Start()
     {
-        InitHearts();    
+        animator.SetBool("isDead", false);
+        animator.SetBool("getHit", false);
     }
 public void InitHearts() 
     {
