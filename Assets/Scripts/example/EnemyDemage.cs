@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class EnemyDemage : MonoBehaviour
 {
-    public float thrust = 10f;  // À»°h¤O«×
+    public float thrust = 2f;  // À»°h¤O«×
     public float knockTime = 0.5f;  // À»°h®É¶¡
-    public float damage = 10f;  // ¶Ë®`­È
+    public float damage = 1f;  // ¶Ë®`­È
 
     private void OnTriggerEnter(Collider other)
     {

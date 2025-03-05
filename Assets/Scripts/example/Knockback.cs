@@ -4,32 +4,32 @@ using UnityEngine;
 
 public class Knockback : MonoBehaviour
 {
-    public float thrust = 10f;  // 擊退力度
+    public float thrust = 2f;  // 擊退力度
     public float knockTime = 0.5f;  // 擊退時間
-    public float damage = 10f;  // 傷害值
+    public float damage = 1f;  // 傷害值
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Enemy"))
         {
-            Rigidbody enemyRb = other.GetComponent<Rigidbody>();
-            Enemy enemyScript = other.GetComponent<Enemy>();
+              Enemy enemyRb = other.GetComponent<Enemy>();
+          Rigidbody enemyScript = other.GetComponent<Rigidbody>();
 
-            if (enemyRb != null)
+            if (enemyScript != null)
             {
-                enemyRb.isKinematic = false;
+                enemyScript.isKinematic = false;
 
                 //  **根據攻擊來源決定擊退方向**
                 Vector3 knockbackDirection = (other.transform.position - transform.position).normalized;
-                enemyRb.AddForce(knockbackDirection * thrust, ForceMode.Impulse);
+                enemyScript.AddForce(knockbackDirection * thrust, ForceMode.Impulse);
 
-                StartCoroutine(KnockCo(enemyRb));
+                StartCoroutine(KnockCo(enemyScript));
             }
 
             //  造成傷害
-            if (enemyScript != null)
+            if (enemyRb != null)
             {
-                enemyScript.TakeDamage(damage);
+                enemyRb.TakeDamage(damage);
             }
         }
     }

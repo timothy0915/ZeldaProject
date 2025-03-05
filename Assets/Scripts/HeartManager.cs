@@ -16,6 +16,7 @@ public class HeartManager : MonoBehaviour
     void Start()
     {
         InitHearts();
+
     }
     public void InitHearts()
     {
@@ -42,6 +43,7 @@ public class HeartManager : MonoBehaviour
             {
                 hearts[i].sprite = halfFullHeart;
             }
+
         }
     }
 }
