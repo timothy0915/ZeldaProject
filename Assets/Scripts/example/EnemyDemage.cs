@@ -7,6 +7,8 @@ public class EnemyDemage : MonoBehaviour
     public float thrust = 2f;  // À»°h¤O«×
     public float knockTime = 0.5f;  // À»°h®É¶¡
     public float damage = 1f;  // ¶Ë®`­È
+    public Animator animator;
+    public Collider Collider; //©Çª«¸I¼²
 
     private void OnTriggerEnter(Collider other)
     {

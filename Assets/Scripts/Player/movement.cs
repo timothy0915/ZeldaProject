@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class movement : MonoBehaviour
 {
+    public FloatValue maxHealth;  // 這是 Scriptable Object，存最大血量
+    public float currentHealth;  // **本地變數，實際運行時的血量**
+
     public CharacterController controller; // 負責控制角色移動
     public Animator animator; // 控制角色動畫
-
-    public FloatValue maxHealth;  // 這是 Scriptable Object，存最大血量
-    private float currentHealth;  // **本地變數，實際運行時的血量**
 
     [Header("Movement")]
     public float speed = 3f; // 角色的基本移動速度
@@ -30,6 +30,7 @@ public class movement : MonoBehaviour
     private Vector3 moveDirection; // 移動方向
 
     void Start()
+
     {
         animator = GetComponent<Animator>();// 取得角色的 Animator 組件
         currentHealth = maxHealth.initialValue;
@@ -124,7 +125,19 @@ public class movement : MonoBehaviour
         }
         return 1f;
     }// 預設回傳 1（代表不影響速度）
-    public void TakeDamage(float damage)
+    
+    //碰撞傷害
+    private void OnTriggerEnter(Collider other)
+    {
+        DamageReciever target = other.GetComponent<DamageReciever>();
+        if (target != null)
+        {
+            // 傳遞傷害並取得剩餘生命值
+        target.TakeDamage(1);//碰撞傷害值
+
+        }
+    }
+     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
         Debug.Log($"{gameObject.name} 受到了 {damage} 傷害，剩餘血量: {currentHealth}");
@@ -134,6 +147,7 @@ public class movement : MonoBehaviour
             Die();
         }
     }
+
 
     private void Die()
     {

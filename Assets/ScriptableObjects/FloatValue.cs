@@ -12,4 +12,9 @@ public class FloatValue : ScriptableObject, ISerializationCallbackReceiver
         RuntimeValue = initialValue;
     }
     public void OnBeforeSerialize() { }
+    public float TakeDamage(float damage)
+    {
+        RuntimeValue -= damage;
+        return RuntimeValue;
+    }
 }
