@@ -29,10 +29,15 @@ public class movement : MonoBehaviour
     bool isGrounded; // 記錄角色是否在地面上
     private Vector3 moveDirection; // 移動方向
 
+
     void Start()
 
     {
         animator = GetComponent<Animator>();// 取得角色的 Animator 組件
+        if (animator == null)
+        {
+            Debug.LogError("Animator 組件未找到！請確認該物件是否有 Animator。");
+        }
         currentHealth = maxHealth.initialValue;
     }
 
@@ -152,6 +157,5 @@ public class movement : MonoBehaviour
     private void Die()
     {
         Debug.Log($"{gameObject.name} 被擊敗！");
-        Destroy(gameObject);  // 銷毀敵人
     }
 }

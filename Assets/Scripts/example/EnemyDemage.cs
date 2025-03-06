@@ -38,11 +38,16 @@ public class EnemyDemage : MonoBehaviour
 
     private IEnumerator KnockCo(Rigidbody playerRb)
     {
-        if (playerRb != null)
+        if (playerRb != null && playerRb.gameObject != null)
         {
             yield return new WaitForSeconds(knockTime);
-            playerRb.velocity = Vector3.zero;
-            playerRb.isKinematic = true;
+
+            // **再次確認 `playerRb` 是否仍然存在**
+            if (playerRb != null && playerRb.gameObject != null)
+            {
+                playerRb.velocity = Vector3.zero;
+                playerRb.isKinematic = true;
+            }
         }
     }
 }
