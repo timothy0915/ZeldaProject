@@ -6,10 +6,13 @@ public class Enemy : MonoBehaviour
 {
     public FloatValue maxHealth;  // 這是 Scriptable Object，存最大血量
     private float currentHealth;  // **本地變數，實際運行時的血量**
+    public Animator animator;
+    public Collider Collider; //怪物碰撞
 
     private void Start()
     {
         currentHealth = maxHealth.initialValue;  // 初始化血量
+        animator = GetComponent<Animator>();
     }
 
     public void TakeDamage(float damage)
@@ -26,6 +29,10 @@ public class Enemy : MonoBehaviour
     private void Die()
     {
         Debug.Log($"{gameObject.name} 被擊敗！");
-        Destroy(gameObject);  // 銷毀敵人
+        // 播放死亡動畫
+        if (animator != null)
+        {
+            animator.SetTrigger("DEAD"); // 讓動畫播放死亡動作
+        }
     }
 }

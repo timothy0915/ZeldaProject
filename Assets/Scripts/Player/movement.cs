@@ -125,7 +125,19 @@ public class movement : MonoBehaviour
         }
         return 1f;
     }// 預設回傳 1（代表不影響速度）
-    public void TakeDamage(float damage)
+    
+    //碰撞傷害
+    private void OnTriggerEnter(Collider other)
+    {
+        DamageReciever target = other.GetComponent<DamageReciever>();
+        if (target != null)
+        {
+            // 傳遞傷害並取得剩餘生命值
+        target.TakeDamage(1);//碰撞傷害值
+
+        }
+    }
+     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
         Debug.Log($"{gameObject.name} 受到了 {damage} 傷害，剩餘血量: {currentHealth}");
@@ -135,6 +147,7 @@ public class movement : MonoBehaviour
             Die();
         }
     }
+
 
     private void Die()
     {
