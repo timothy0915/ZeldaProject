@@ -27,8 +27,8 @@ public class ShieldPush : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        // 只影響標籤為 "Enemy" 或 "Rock" 的物體
-        if (other.CompareTag("enemy") || other.CompareTag("Rock"))
+        // 只影響標籤為 "Enemy" 
+        if (other.CompareTag("Enemy") )
         {
             Rigidbody rb = other.GetComponent<Rigidbody>();
 

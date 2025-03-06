@@ -28,7 +28,7 @@ public class CameraBehavior : MonoBehaviour
     */
         // 設定偏移角度（左右 30 度）
         Quaternion offsetRotation = Quaternion.Euler(0, -15, 0);
-        Vector3 rotatedOffset = offsetRotation * new Vector3(0, 0, -CameraToTargetDistance);
+        Vector3 rotatedOffset = new Vector3(0, 0, -CameraToTargetDistance);
 
         // 計算攝影機位置
         transform.position = _target.position + rotatedOffset + Vector3.up * CamOffset.y;

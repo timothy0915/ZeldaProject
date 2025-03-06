@@ -7,7 +7,25 @@ public class Knockback : MonoBehaviour
     public float thrust = 10f;  // 擊退力度
     public float knockTime = 0.5f;  // 擊退時間
     public float damage = 10f;  // 傷害值
-
+    public Collider hitCollider;  // 指定要開啟的碰撞箱
+    private void Start()
+    {
+        hitCollider.enabled = false; // 一開始關閉碰撞箱
+    }
+    void Update()
+    {
+        // 按下 "左鍵" 開啟碰撞箱
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            hitCollider.enabled = true;
+        }
+        if (Input.GetKeyUp(KeyCode.Mouse0))
+        {
+            hitCollider.enabled = false;
+        }
+    
+    }
+    
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Enemy"))

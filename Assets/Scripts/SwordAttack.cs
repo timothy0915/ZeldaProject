@@ -5,8 +5,8 @@ using UnityEngine;
 public class SwordAttack : MonoBehaviour
 {
     public Collider hitCollider;  // 指定要開啟的碰撞箱
-    public Animator animator;
-
+    public float pushForce = 10f; // 推開的力量
+    
 
     private void Start()
     {
@@ -28,15 +28,22 @@ public class SwordAttack : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        // 只影響標籤為 "Enemy" 或 "Rock" 的物體
-        if (other.CompareTag("enemy") || other.CompareTag("Grass"))
+        // 只影響標籤為 "Enemy" 
+        if (other.CompareTag("Enemy"))
         {
             Rigidbody rb = other.GetComponent<Rigidbody>();
-
+            
             if (rb != null)
             {
-              
+                // 計算推開方向
+                Vector3 pushDirection = other.transform.position - transform.position;
+                pushDirection.y = 0; // 避免物體飛到空中
+                pushDirection.Normalize();
+
+                // 加上推力
+                rb.AddForce(pushDirection * pushForce, ForceMode.Impulse);
             }
+           
         }
     }
 }
