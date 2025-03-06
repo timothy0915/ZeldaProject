@@ -5,7 +5,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     public FloatValue maxHealth;  // 這是 Scriptable Object，存最大血量
-    private float currentHealth;  // **本地變數，實際運行時的血量**
+    [SerializeField] float currentHealth;  // **本地變數，實際運行時的血量**
     public Animator animator;
     public Collider Collider; //怪物碰撞
 

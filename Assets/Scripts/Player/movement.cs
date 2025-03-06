@@ -39,7 +39,7 @@ public class movement : MonoBehaviour
     void Update()
     {
         // **檢測角色是否在地面上**
-        isGrounded = controller.isGrounded || Physics.Raycast(transform.position, Vector3.down, out _, ground_distance + 0.1f, ground_mask);
+        isGrounded = controller.isGrounded || Physics.Raycast(transform.position, Vector3.down, out _, ground_distance + 0.45f, ground_mask);
         if (isGrounded && velocity.y < 0)
         {
             velocity.y = -2.0f; // 讓角色緊貼地面，避免不必要的浮動

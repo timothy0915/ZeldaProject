@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 
 public class Attackradius : MonoBehaviour
 {
     public float attackRadius;
-    public Transform homePosition;public Transform target;  // 追蹤玩家
+    public Transform homePosition;
+    public Transform target;  // 追蹤玩家
     public float chaseRadius = 10f;
     public float moveSpeed = 3f; //怪物移動速度
 
@@ -34,7 +36,12 @@ public class Attackradius : MonoBehaviour
         {
             if (Vector3.Distance(target.position, transform.position) <= chaseRadius) // 修正錯誤的 if 條件
             {
-                transform.position = Vector3.MoveTowards(transform.position, target.position, moveSpeed * Time.deltaTime);
+                Vector3 moveD = target.position - transform.position;
+                moveD.y = 0;
+                if (moveD.magnitude > 0) {
+                    GetComponent<CharacterController>().Move(moveD.normalized * Time.deltaTime);
+           //     transform.position = Vector3.MoveTowards(transform.position, target.position, moveSpeed * Time.deltaTime);
+                }
             }
         }
     }
