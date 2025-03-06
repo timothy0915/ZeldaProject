@@ -9,7 +9,7 @@ public class movement : MonoBehaviour
     public Animator animator; // 控制角色動畫
 
     public FloatValue maxHealth;  // 這是 Scriptable Object，存最大血量
-    private float currentHealth;  // **本地變數，實際運行時的血量**
+    public FloatValue currentHealth;  // **本地變數，實際運行時的血量**
 
     [Header("Movement")]
     public float speed = 3f; // 角色的基本移動速度
