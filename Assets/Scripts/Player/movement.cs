@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class movement : MonoBehaviour
 {
+    public FloatValue maxHealth;  // 這是 Scriptable Object，存最大血量
+    public float currentHealth;  // **本地變數，實際運行時的血量**
+
     public CharacterController controller; // 負責控制角色移動
     public Animator animator; // 控制角色動畫
-
-    public FloatValue maxHealth;  // 這是 Scriptable Object，存最大血量
-    public FloatValue currentHealth;  // **本地變數，實際運行時的血量**
 
     [Header("Movement")]
     public float speed = 3f; // 角色的基本移動速度
@@ -30,6 +30,7 @@ public class movement : MonoBehaviour
     private Vector3 moveDirection; // 移動方向
 
     void Start()
+
     {
         animator = GetComponent<Animator>();// 取得角色的 Animator 組件
         currentHealth = maxHealth.initialValue;
