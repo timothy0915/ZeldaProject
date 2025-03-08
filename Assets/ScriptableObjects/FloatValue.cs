@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-[CreateAssetMenu]
+[CreateAssetMenu(fileName = "NewFloatValue", menuName = "ScriptableObjects/FloatValue")]
 public class FloatValue : ScriptableObject
 {
-    public float initialValue;
+    public float initialValue; // 最大生命值
 }

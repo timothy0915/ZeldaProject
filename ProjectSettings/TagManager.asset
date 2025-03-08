@@ -5,11 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - GetSkill
-  - enemy
   - Wall
   - Sword
   - Sheld
   - Trap
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -18,7 +18,7 @@ TagManager:
   - Water
   - UI
   - Ground
-  - 
+  - Player
   - 
   - 
   - 
