@@ -1,13 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using JetBrains.Annotations;
 using UnityEngine;
 
 public class movement : MonoBehaviour
 {
-    public FloatValue maxHealth;  // 這是 Scriptable Object，存最大血量
-    public float currentHealth;  // **本地變數，實際運行時的血量**
-
     public CharacterController controller; // 負責控制角色移動
     public Animator animator; // 控制角色動畫
 
@@ -30,16 +26,14 @@ public class movement : MonoBehaviour
     private Vector3 moveDirection; // 移動方向
 
     void Start()
-
     {
         animator = GetComponent<Animator>();// 取得角色的 Animator 組件
-        currentHealth = maxHealth.initialValue;
     }
 
     void Update()
     {
         // **檢測角色是否在地面上**
-        isGrounded = controller.isGrounded || Physics.Raycast(transform.position, Vector3.down, out _, ground_distance + 0.45f, ground_mask);
+        isGrounded = controller.isGrounded || Physics.Raycast(transform.position, Vector3.down, out _, ground_distance + 0.1f, ground_mask);
         if (isGrounded && velocity.y < 0)
         {
             velocity.y = -2.0f; // 讓角色緊貼地面，避免不必要的浮動
@@ -77,7 +71,7 @@ public class movement : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Mouse1))//按下右鍵防禦
         {
-            animator.SetBool("defend", true);
+            animator.SetBool("defend",true);
         }
         if (Input.GetKeyUp(KeyCode.Mouse1))//放開右鍵復原
         {
@@ -123,35 +117,6 @@ public class movement : MonoBehaviour
             // 根據坡度比例縮減速度（坡度越大，速度越慢）
             return Mathf.Lerp(1f, slopeSpeedFactor, slopeAngle / maxSlopeAngle);
         }
-        return 1f;
-    }// 預設回傳 1（代表不影響速度）
-    
-    //碰撞傷害
-    private void OnTriggerEnter(Collider other)
-    {
-        DamageReciever target = other.GetComponent<DamageReciever>();
-        if (target != null)
-        {
-            // 傳遞傷害並取得剩餘生命值
-        target.TakeDamage(1);//碰撞傷害值
-
-        }
-    }
-     public void TakeDamage(float damage)
-    {
-        currentHealth -= damage;
-        Debug.Log($"{gameObject.name} 受到了 {damage} 傷害，剩餘血量: {currentHealth}");
-
-        if (currentHealth <= 0)
-        {
-            Die();
-        }
-    }
-
-
-    private void Die()
-    {
-        Debug.Log($"{gameObject.name} 被擊敗！");
-        Destroy(gameObject);  // 銷毀敵人
+        return 1f; // 預設回傳 1（代表不影響速度）
     }
 }

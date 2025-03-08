@@ -10,8 +10,6 @@ TagManager:
   - Sword
   - Sheld
   - Trap
-  - Weapon
-  - Enemy
   layers:
   - Default
   - TransparentFX
