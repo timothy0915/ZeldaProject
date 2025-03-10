@@ -1,88 +1,204 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
+// 控制敵人行為的腳本，例如移動、受傷、死亡等
 public class EnemyController : MonoBehaviour
 {
-    // **敵人參數設定**
-    public float speed = 3f; // 敵人的正常移動速度
-    public float knockbackDuration = 0.5f; // 擊退持續時間
-    public float stunDuration = 0.5f; // 被擊退後的僵直時間
-    public Transform player; // 目標玩家
+    [Header("移動參數")]
+    public float speed = 3f;              // 移動速度
+    public float detectionRange = 10f;    // 偵測玩家的距離
+    public float knockbackDuration = 0.5f;  // 擊退持續的時間
+    public float stunDuration = 0.5f;       // 僵直持續的時間
 
-    // **內部變數**
-    private CharacterController characterController; // 用於控制敵人的移動
-    private Vector3 knockbackDirection; // 擊退的方向
-    private float knockbackTimer = 0; // 擊退計時器
-    private float stunTimer = 0; // 僵直計時器
-    private bool isStunned = false; // 是否處於僵直狀態
+    [Header("血量設定")]
+    public float health = 100f;           // 敵人初始血量
 
+    public Transform player;              // 玩家物件的 Transform
+    public Animator animator;             // 控制動畫的 Animator
+
+    // 私有變數
+    private CharacterController characterController; // 用於移動角色的 CharacterController 元件
+    private Vector3 knockbackDirection;  // 記錄擊退的方向
+    private float knockbackTimer = 0f;   // 記錄擊退效果持續時間的計時器
+    private float stunTimer = 0f;        // 記錄僵直效果持續時間的計時器
+    private bool isStunned = false;      // 是否處於僵直狀態
+    public bool isDead = false;          // 是否已經死亡
+
+    // Start() 在遊戲開始時執行一次
     private void Start()
     {
-        // 取得 CharacterController 組件
+        // 取得角色控制器，負責移動與碰撞
         characterController = GetComponent<CharacterController>();
 
-        // **找到場景中的玩家對象（確保玩家有 "Player" 標籤）**
+        // 若 animator 尚未被指定，嘗試從當前物件取得 Animator 元件
+        if (animator == null)
+        {
+            animator = GetComponent<Animator>();
+        }
+        // 利用 Tag 尋找玩家物件，並取得其 Transform
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
         if (playerObject != null)
         {
-            player = playerObject.transform;
+            player = playerObject.transform; 
         }
     }
 
+    // Update() 每一幀執行一次，負責處理敵人的行為
     private void Update()
     {
+        // 如果敵人已死亡，則不處理任何行為
+        if (isDead)
+        {
+            return;
+        }
+
+        // 檢查是否處於擊退或僵直狀態
         if (knockbackTimer > 0)
         {
-            // **處理擊退效果**
-            characterController.Move(knockbackDirection * Time.deltaTime); // 移動敵人
+            // 在擊退狀態下，利用角色控制器移動
+            characterController.Move(knockbackDirection * Time.deltaTime);
+            // 減少擊退計時器
             knockbackTimer -= Time.deltaTime;
-
             if (knockbackTimer <= 0)
             {
-                // 擊退結束後進入僵直狀態
+                // 當擊退效果結束後，進入僵直狀態
                 isStunned = true;
                 stunTimer = stunDuration;
             }
+            // 播放站立動畫，不進行移動動畫
+            animator.SetBool("IsMoving", false);
         }
         else if (isStunned)
         {
-            // **處理僵直效果**
+            // 處於僵直狀態時，倒數計時
             stunTimer -= Time.deltaTime;
             if (stunTimer <= 0)
             {
-                isStunned = false; // 僵直結束，恢復行動
+                // 僵直時間結束，取消僵直狀態
+                isStunned = false;
             }
+            // 播放站立動畫
+            animator.SetBool("IsMoving", false);
         }
         else
         {
-            // **正常情況下，敵人會朝玩家移動**
+            // 若不在擊退或僵直狀態，則進行正常移動向玩家靠近
             MoveTowardsPlayer();
         }
     }
 
-    // **施加擊退效果**
-    public void ApplyKnockback(Vector3 direction, float force)
-    {
-        knockbackDirection = direction.normalized * force; // 設定擊退方向與力道
-        knockbackTimer = knockbackDuration; // 設定擊退持續時間
-        isStunned = false; // 確保不會因為擊退進入僵直狀態
-    }
-
-    // **敵人朝玩家移動**
+    // 方法：讓敵人移動向玩家靠近
     private void MoveTowardsPlayer()
     {
-        if (player == null) return; // 確保玩家對象存在
+        // 如果找不到玩家則直接返回
+        if (player == null) return;
 
-        // 計算敵人到玩家的方向
-        Vector3 direction = (player.position - transform.position).normalized;
-        direction.y = 0; // 確保敵人不受 Y 軸影響（避免因地形高低改變移動方式）
+        // 檢查玩家是否死亡（假設玩家身上有 PlayerController）
+        PlayerController playerController = player.GetComponent<PlayerController>();
+        if (playerController != null && playerController.isDead)
+        {
+            // 若玩家已死亡，停止移動與攻擊
+            animator.SetBool("IsMoving", false);
+            return;
+        }
 
-        // **移動敵人朝玩家前進**
-        characterController.Move(direction * speed * Time.deltaTime);
+        // 計算敵人與玩家之間的距離
+        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+        // 如果玩家在偵測範圍內則追趕玩家
+        if (distanceToPlayer <= detectionRange)
+        {
+            // 計算從敵人指向玩家的方向
+            Vector3 direction = (player.position - transform.position);
+            // 僅考慮水平方向
+            direction.y = 0;
+            if (direction.magnitude > 0)
+            {
+                // 使敵人面向玩家
+                transform.LookAt(new Vector3(player.position.x, transform.position.y, player.position.z));
+                // 播放移動動畫
+                animator.SetBool("IsMoving", true);
+            }
+            else
+            {
+                // 如果方向向量為零，則停止移動動畫
+                animator.SetBool("IsMoving", false);
+            }
+            // 使用 SimpleMove 方法移動敵人，SimpleMove 自動考慮重力效果
+            characterController.SimpleMove(direction.normalized * speed);
+        }
+        else
+        {
+            // 如果玩家超出偵測範圍，停止移動動畫
+            animator.SetBool("IsMoving", false);
+        }
+    }
 
-        // **讓敵人面向玩家**
-        transform.LookAt(new Vector3(player.position.x, transform.position.y, player.position.z));
+    // 方法：處理受到攻擊時減少血量的行為
+    public void TakeDamage(float damage)
+    {
+        // 如果已經死亡則忽略傷害
+        if (isDead)
+        {
+            return;
+        }
+        // 扣除血量
+        health -= damage;
+        // 觸發受傷動畫
+        animator.SetTrigger("GetHit");
+
+        // 如果血量小於等於 0，則執行死亡程序
+        if (health <= 0f)
+        {
+            Die();
+        }
+    }
+
+    // 方法：當敵人受到攻擊時施加擊退效果
+    public void ApplyKnockback(Vector3 direction, float force)
+    {
+        // 如果已死亡則不處理
+        if (isDead) return;
+
+        // 設定擊退方向為正規化後的方向乘上力度
+        knockbackDirection = direction.normalized * force;
+        // 設定擊退計時器為預設持續時間
+        knockbackTimer = knockbackDuration;
+        // 在擊退期間取消僵直狀態
+        isStunned = false;
+    }
+
+    // 方法：處理敵人死亡的邏輯
+    private void Die()
+    {
+        // 防止重複執行死亡邏輯
+        if (isDead) return;
+        isDead = true;
+
+        // 觸發死亡動畫，在 Animator 中應該有 "Die" 的 Trigger
+        animator.SetTrigger("Die");
+
+        // 停用角色控制器，避免死亡後仍進行碰撞或移動
+        characterController.enabled = false;
+
+        // 如果存在攻擊腳本，則停用攻擊行為
+        EnemyAttack enemyAttack = GetComponent<EnemyAttack>();
+        if (enemyAttack != null)
+        {
+            enemyAttack.enabled = false;
+        }
+
+        // 啟動協程，等待死亡動畫播放完畢後銷毀物件
+        StartCoroutine(DeathRoutine());
+    }
+
+    // 協程：等待一段時間後銷毀敵人物件
+    private IEnumerator DeathRoutine()
+    {
+        // 等待 2 秒，可以根據死亡動畫長度進行調整
+        yield return new WaitForSeconds(2f);
+
+        // 等待結束後銷毀該物件
+        Destroy(gameObject);
     }
 }
