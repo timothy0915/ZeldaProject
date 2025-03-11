@@ -35,7 +35,9 @@ public class PlayerController : MonoBehaviour
     private float attackTimer = 0f;         // 用於計算攻擊冷卻時間的計時器
 
     [Header("血量設定")]
-    public float health = 100f;             // 玩家血量
+    public float health = 10f;             // 玩家血量
+    public float maxHealth = 10f;             // 玩家血總量
+    public float maxTotalHealth = 100f;             // 玩家能達到的最大血量
 
     // 私有變數
     private Vector3 velocity;             // 用於計算角色受重力影響的移動速度

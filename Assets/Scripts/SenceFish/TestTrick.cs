@@ -21,7 +21,7 @@ public class TestTrick : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.X))
         {
-            healthBarHUDTester.Hurt(0.25f);
+            healthBarHUDTester.Hurt(1);
             Debug.Log("Hurt");
         }
         if (Input.GetKeyDown(KeyCode.Y))

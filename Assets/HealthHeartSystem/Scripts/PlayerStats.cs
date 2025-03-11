@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class PlayerStats : MonoBehaviour
 {
+    public PlayerController player;
     public delegate void OnHealthChangedDelegate();
     public OnHealthChangedDelegate onHealthChangedCallback;
 
@@ -22,16 +23,45 @@ public class PlayerStats : MonoBehaviour
     }
     #endregion
 
-    [SerializeField]
     private float health;
-    [SerializeField]
     private float maxHealth;
-    [SerializeField]
     private float maxTotalHealth;
 
-    public float Health { get { return health; } }
-    public float MaxHealth { get { return maxHealth; } }
-    public float MaxTotalHealth { get { return maxTotalHealth; } }
+    private void Start()
+    {
+        health = player.health;
+        maxHealth = player.maxHealth;
+        maxTotalHealth = player.maxTotalHealth;
+    }
+    private void Update()
+    {
+        if (health != player.health) health = player.health; ClampHealth();
+        if (maxHealth != player.maxHealth) maxHealth = player.maxHealth; ClampHealth();
+        if (maxTotalHealth != player.maxTotalHealth) maxTotalHealth = player.maxTotalHealth; ClampHealth();
+    }
+    public float Health { 
+        get {
+            return health; }
+        set { if (value <= maxHealth) health = value;
+            DataApply();
+        }
+    }
+    public float MaxHealth { 
+        get {
+            return maxHealth; }
+        set { if (value <= health) health = value;
+            if (value <= maxTotalHealth) maxHealth = value;
+            DataApply();
+        }
+    }
+    public float MaxTotalHealth { 
+        get {
+            return maxTotalHealth;}
+        set { if(value<= maxHealth) maxHealth = value;
+            maxTotalHealth = value;
+            DataApply();
+        }
+    }
 
     public void Heal(float health)
     {
@@ -63,5 +93,11 @@ public class PlayerStats : MonoBehaviour
 
         if (onHealthChangedCallback != null)
             onHealthChangedCallback.Invoke();
+    }
+    void DataApply()//把player的data複寫
+    {
+        player.health = health;
+        player.maxHealth = maxHealth;
+        player.maxTotalHealth =maxTotalHealth;
     }
 }
