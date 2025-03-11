@@ -67,7 +67,7 @@ public class EnemyController : MonoBehaviour
                 stunTimer = stunDuration;
             }
             // 播放站立動畫，不進行移動動畫
-            animator.SetBool("IsMoving", false);
+            animator.SetBool("MOVE", false);
         }
         else if (isStunned)
         {
@@ -79,7 +79,7 @@ public class EnemyController : MonoBehaviour
                 isStunned = false;
             }
             // 播放站立動畫
-            animator.SetBool("IsMoving", false);
+            animator.SetBool("MOVE", false);
         }
         else
         {
@@ -99,7 +99,7 @@ public class EnemyController : MonoBehaviour
         if (playerController != null && playerController.isDead)
         {
             // 若玩家已死亡，停止移動與攻擊
-            animator.SetBool("IsMoving", false);
+            animator.SetBool("MOVE", false);
             return;
         }
 
@@ -117,12 +117,12 @@ public class EnemyController : MonoBehaviour
                 // 使敵人面向玩家
                 transform.LookAt(new Vector3(player.position.x, transform.position.y, player.position.z));
                 // 播放移動動畫
-                animator.SetBool("IsMoving", true);
+                animator.SetBool("MOVE", true);
             }
             else
             {
                 // 如果方向向量為零，則停止移動動畫
-                animator.SetBool("IsMoving", false);
+                animator.SetBool("MOVE", false);
             }
             // 使用 SimpleMove 方法移動敵人，SimpleMove 自動考慮重力效果
             characterController.SimpleMove(direction.normalized * speed);
@@ -130,7 +130,7 @@ public class EnemyController : MonoBehaviour
         else
         {
             // 如果玩家超出偵測範圍，停止移動動畫
-            animator.SetBool("IsMoving", false);
+            animator.SetBool("MOVE", false);
         }
     }
 
@@ -145,7 +145,7 @@ public class EnemyController : MonoBehaviour
         // 扣除血量
         health -= damage;
         // 觸發受傷動畫
-        animator.SetTrigger("GetHit");
+        animator.SetTrigger("GETHIT");
 
         // 如果血量小於等於 0，則執行死亡程序
         if (health <= 0f)
@@ -176,7 +176,7 @@ public class EnemyController : MonoBehaviour
         isDead = true;
 
         // 觸發死亡動畫，在 Animator 中應該有 "Die" 的 Trigger
-        animator.SetTrigger("Die");
+        animator.SetTrigger("DEAD");
 
         // 停用角色控制器，避免死亡後仍進行碰撞或移動
         characterController.enabled = false;
