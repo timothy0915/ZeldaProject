@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 454860}
   - component: {fileID: 11154864}
-  - component: {fileID: 7093637977897086901}
   - component: {fileID: 4341680918384353322}
-  m_Layer: 0
+  - component: {fileID: 6053648836105667949}
+  m_Layer: 6
   m_Name: Pf_Trap_Cutter
   m_TagString: Trap
   m_Icon: {fileID: 0}
@@ -53,33 +53,6 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
---- !u!54 &7093637977897086901
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 154860}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 126
-  m_CollisionDetection: 0
 --- !u!65 &4341680918384353322
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -101,6 +74,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1.7626382, z: 1}
   m_Center: {x: 0, y: 0.3813191, z: 0}
+--- !u!114 &6053648836105667949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 154860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93a63646259e70f4194b4a49ffc2211f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 10
+  knockbackForce: 5
 --- !u!1 &154862
 GameObject:
   m_ObjectHideFlags: 0
@@ -113,7 +100,7 @@ GameObject:
   - component: {fileID: 3354862}
   - component: {fileID: 2354862}
   - component: {fileID: 6554864}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cutter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -200,9 +187,9 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1, y: 0.2, z: 1}
   m_Center: {x: 0, y: 0.4, z: 0}
@@ -217,7 +204,7 @@ GameObject:
   - component: {fileID: 454864}
   - component: {fileID: 3354864}
   - component: {fileID: 2354864}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Trap_Cutter
   m_TagString: Untagged
   m_Icon: {fileID: 0}

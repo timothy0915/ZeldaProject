@@ -2,257 +2,329 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// 玩家控制腳本，負責處理玩家的移動、攻擊、跳躍等操作
+/// <summary>
+/// 玩家控制腳本：負責處理玩家的移動、攻擊、跳躍、受到攻擊以及死亡等狀態。
+/// 利用 Unity 的 CharacterController 來實現碰撞檢測與物理移動，並使用 Animator 控制動畫播放。
+/// </summary>
 public class PlayerController : MonoBehaviour
 {
+    
     [Header("角色控制")]
-    public CharacterController controller;  // 使用 Unity 的 CharacterController 處理碰撞和移動
-    public Animator animator;               // 用於控制角色動畫
+    public CharacterController controller;  // 利用 Unity 內建的 CharacterController 處理角色的碰撞和移動
+    public Animator animator;               // 用於控制角色動畫的 Animator 元件
+    
 
+    
     [Header("移動設定")]
-    public float speed = 3f;                // 移動速度
-    public float gravity = -9.81f;          // 重力值
-    public float jumpHeight = 1f;           // 跳躍高度
+    public float speed = 3f;                // 角色的基本移動速度
+    public float gravity = -9.81f;          // 模擬重力的數值（負值表示向下）
+    public float jumpHeight = 1f;           // 跳躍能達到的高度
+   
 
+   
     [Header("地面檢測")]
-    public Transform ground_check;          // 地面檢測點，用於判斷角色是否在地面上
-    public float ground_distance = 0.5f;    // 檢測範圍的半徑
-    public LayerMask ground_mask;           // 用於判斷哪些物體被認定為地面
+    public Transform ground_check;          // 地面檢測點，通常放在角色腳部附近
+    public float ground_distance = 0.5f;      // 以此半徑進行地面碰撞檢查
+    public LayerMask ground_mask;           // 指定哪些 Layer 被認定為地面（例如 Terrain、Platform 等）
+    
 
+    
     [Header("坡度處理")]
-    public float slopeSpeedFactor = 0.5f;   // 當角色在坡道上移動時，速度的調整因子
-    public float maxSlopeAngle = 45f;       // 最大坡度角度，超過此角度時速度會降低
+    public float slopeSpeedFactor = 0.5f;   // 當角色在坡道上時，移動速度的倍率（越小代表坡度大時速度降低得越明顯）
+    public float maxSlopeAngle = 45f;       // 允許角色移動的最大坡度角度，超過此角度後移動速度會被進一步調整
+  
 
+    
     [Header("擊退設定")]
-    public float knockbackDuration = 0.5f;  // 擊退持續的時間
-    public float stunDuration = 0.5f;       // 僵直持續的時間
+    public float knockbackDuration = 0.5f;  // 當角色受到擊退時，持續移動的時間
+    public float stunDuration = 0.5f;       // 擊退結束後，角色處於僵直狀態的持續時間（無法操作）
+   
 
+    
     [Header("攻擊設定")]
-    public float attackRange = 2f;          // 攻擊檢測的射程（利用 Raycast）
-    public float attackDamage = 20f;        // 攻擊造成的傷害
-    public float attackKnockbackForce = 5f; // 攻擊時對敵人施加的擊退力度
-    public float attackCooldown = 0.5f;     // 攻擊間隔時間
-    private float attackTimer = 0f;         // 用於計算攻擊冷卻時間的計時器
+    public float attackRange = 2f;          // 攻擊時使用 Raycast 檢測的射程距離
+    public float attackDamage = 20f;        // 攻擊時造成敵人的傷害值
+    public float attackKnockbackForce = 5f; // 攻擊時對敵人施加的擊退力量
+    public float attackCooldown = 0.5f;     // 攻擊後需要等待的冷卻時間
+    private float attackTimer = 0f;         // 用來計時攻擊冷卻的計時器
+   
 
+   
+    // 透過連擊變數控制攻擊招式連續輸入的狀態
+    private int attackCombo = 0;            // 目前的連擊狀態（例如 1 表示第一招，2 表示第二招）
+    public float comboResetTime = 1.0f;       // 連擊輸入間隔，若超過這個時間則重置連擊狀態
+    private float comboTimer = 0f;            // 計時連擊間隔的倒計時器
+   
+
+   
     [Header("血量設定")]
-    public float health = 100f;             // 玩家血量
+    public float health = 100f;             // 玩家初始的血量值
+   
+   
+    private Vector3 velocity;             // 用來計算重力、跳躍與其他外力影響下的速度
+    private bool isGrounded;              // 是否接觸地面的旗標
+    private Vector3 moveDirection;        // 玩家移動方向的向量
+    private Vector3 knockbackDirection;   // 擊退時的方向向量
+    private float knockbackTimer = 0f;    // 擊退狀態的持續倒計時
+    private float stunTimer = 0f;         // 僵直狀態的倒計時
+    private bool isStunned = false;       // 是否正處於僵直狀態（無法操作）
+    public bool isDead = false;           // 玩家是否已經死亡
+   
 
-    // 私有變數
-    private Vector3 velocity;             // 用於計算角色受重力影響的移動速度
-    private bool isGrounded;              // 判斷角色是否在地面上
-    private Vector3 moveDirection;        // 玩家移動方向
-    private Vector3 knockbackDirection;   // 擊退方向
-    private float knockbackTimer = 0f;    // 擊退持續的計時器
-    private float stunTimer = 0f;         // 僵直持續的計時器
-    private bool isStunned = false;       // 是否處於僵直狀態
-    public bool isDead = false;           // 玩家是否死亡
-
-    // Start() 在遊戲開始時執行一次
+    // Start() 在遊戲開始時執行一次，通常用來初始化必要元件
     void Start()
     {
-        // 取得 Animator 元件
+        // 取得該 GameObject 上的 Animator 元件，用以控制動畫
         animator = GetComponent<Animator>();
     }
 
-    // Update() 每一幀都會執行，處理玩家輸入與動作
+    // Update() 每一幀呼叫一次，用於處理玩家輸入及狀態更新
     void Update()
     {
-        // 如果玩家已死亡，則不處理後續輸入與行為
+        // 若玩家已死亡，不再處理任何輸入或狀態更新
         if (isDead)
         {
-            return; 
+            return;
         }
 
-        // 攻擊冷卻計時，每一幀減少冷卻計時器
+        // 攻擊冷卻：若攻擊計時器尚未歸零，則持續減少倒數
         if (attackTimer > 0)
         {
             attackTimer -= Time.deltaTime;
         }
-        // 地面檢測，利用 CharacterController 的 isGrounded 或使用 Raycast 檢測地面
+
+        // 地面檢測：利用 CharacterController 的 isGrounded 或 Raycast 來確認角色是否在地面上
+        // 此處同時檢查兩種方式以提高穩定性
         isGrounded = controller.isGrounded || Physics.Raycast(transform.position, Vector3.down, ground_distance + 0.1f, ground_mask);
         if (isGrounded && velocity.y < 0)
         {
-            // 如果在地面上並且下落速度為負，則將下落速度設定為輕微的負值以保持接地狀態
+            // 當角色落地時，將垂直速度設為輕微負值以保證持續接地，避免因速度過大造成穿透
             velocity.y = -2f;
         }
 
-        // 處理擊退和僵直狀態
+        // 處理擊退與僵直狀態
         if (knockbackTimer > 0)
         {
-            // 在擊退狀態中，利用 CharacterController 移動
+            // 正在受到擊退：根據 knockbackDirection 移動角色
             controller.Move(knockbackDirection * Time.deltaTime);
             knockbackTimer -= Time.deltaTime;
             if (knockbackTimer <= 0)
             {
-                // 擊退結束後進入僵直狀態
+                // 擊退結束後，進入短暫的僵直狀態
                 isStunned = true;
                 stunTimer = stunDuration;
             }
         }
         else if (isStunned)
         {
-            // 處於僵直狀態，倒數計時
+            // 處於僵直狀態：倒數計時直至結束
             stunTimer -= Time.deltaTime;
             if (stunTimer <= 0)
             {
-                // 僵直結束
+                // 僵直狀態結束，恢復玩家控制
                 isStunned = false;
             }
         }
         else
         {
-            // 玩家正常控制移動
+            // 正常操作狀態下，處理玩家移動和攻擊輸入
             MovePlayer();
-            // 攻擊判定：當玩家按下滑鼠左鍵並且攻擊冷卻時間結束時
+
+            // 當玩家按下滑鼠左鍵且攻擊冷卻計時器歸零時進行攻擊
             if (Input.GetKeyDown(KeyCode.Mouse0) && attackTimer <= 0)
             {
-                // 觸發攻擊動畫
-                animator.SetTrigger("attack");
-                // 執行攻擊的射線檢測
+                // 判斷是否在有效連擊輸入時間內
+                if (comboTimer > 0)
+                {
+                    // 若連擊次數還未達上限，則增加連擊數
+                    if (attackCombo < 2)
+                        attackCombo++;
+                    else
+                        attackCombo = 1;  // 若已達第二招，則重置為第一招（依需求可調整連擊上限）
+                }
+                else
+                {
+                    // 若連擊間隔超時，從第一招開始
+                    attackCombo = 1;
+                }
+
+                // 根據當前連擊狀態觸發對應的攻擊動畫
+                if (attackCombo == 1)
+                    animator.SetTrigger("attack1");
+                else if (attackCombo == 2)
+                    animator.SetTrigger("attack2");
+
+                // 執行攻擊檢測（利用 Raycast 判定前方是否有敵人命中）
                 AttackRaycast();
                 // 重置攻擊冷卻計時器
                 attackTimer = attackCooldown;
+                // 重置連擊計時器，等待下一次連擊輸入
+                comboTimer = comboResetTime;
+            }
+
+            // 更新連擊倒計時器，若倒計時結束則重置連擊狀態
+            if (comboTimer > 0)
+            {
+                comboTimer -= Time.deltaTime;
+            }
+            else
+            {
+                attackCombo = 0;
             }
         }
+
+        // 處理跳躍：檢查是否按下跳躍按鈕且角色位於地面上
+        if (Input.GetButtonDown("Jump") && isGrounded)
+        {
+            // 根據跳躍高度及重力計算需要的初始垂直速度
+            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+        }
+        // 更新動畫狀態：當角色不在地面上時，將 "IsJump" 參數設為 true
+        animator.SetBool("IsJump", !isGrounded);
+        // 依照重力持續影響垂直速度
+        velocity.y += gravity * Time.deltaTime;
+        // 使用 CharacterController 移動角色，同時考慮重力效果
+        controller.Move(velocity * Time.deltaTime);
     }
 
-    // 處理玩家移動的邏輯
+    /// <summary>
+    /// MovePlayer() 處理玩家的基本移動操作，包括取得輸入、計算方向、考慮坡度影響、以及更新動畫。
+    /// </summary>
     private void MovePlayer()
     {
-        // 取得水平（x 軸）和垂直（z 軸）的輸入值
+        // 從玩家輸入取得水平（x 軸）與垂直（z 軸）的數值
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
-        // 建立一個向量表示移動方向（僅限 x 與 z 軸）
+        // 組合成移動方向向量，忽略 y 軸（垂直方向）
         moveDirection = new Vector3(x, 0, z);
-        // 如果輸入向量大於 1，則進行正規化，以保持移動速度一致
+        // 如果向量長度大於 1（例如同時按下兩個方向鍵），則進行正規化以保持一致速度
         if (moveDirection.magnitude > 1)
             moveDirection.Normalize();
 
-        // 計算在坡道上移動時的速度調整係數
+        // 根據目前地面的坡度調整移動速度倍率
         float slopeMultiplier = GetSlopeSpeedMultiplier();
-        // 計算最終移動向量：基於輸入方向、速度和坡道調整因子
+        // 計算最終移動向量：基於移動方向、設定速度與坡度倍率
         Vector3 finalMove = moveDirection * speed * slopeMultiplier;
 
         if (moveDirection != Vector3.zero)
         {
-            // 如果有移動輸入，則讓角色面向移動方向
+            // 當有移動輸入時，旋轉角色面向移動方向
             transform.rotation = Quaternion.LookRotation(moveDirection);
-            // 設定移動動畫參數，這裡設為速度值
+            // 設定動畫參數，根據速度播放對應的移動動畫
             animator.SetFloat("MoveSpeed", speed);
-            // 利用 CharacterController 移動角色
+            // 執行移動操作
             controller.Move(finalMove * Time.deltaTime);
         }
         else
         {
-            // 沒有移動輸入時，將移動動畫參數設為0，表示靜止
+            // 無輸入時，設定動畫參數為 0，播放待機狀態動畫
             animator.SetFloat("MoveSpeed", 0);
         }
-
-        // 處理跳躍邏輯：當按下跳躍按鍵且角色在地面上時
-        if (Input.GetButtonDown("Jump") && isGrounded)
-        {
-            // 計算跳躍的初始速度，利用跳躍高度與重力公式
-            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-        }
-        // 設定動畫中是否在空中（跳躍狀態），根據是否在地面上
-        animator.SetBool("IsJump", !isGrounded);
-        // 累加重力影響，使角色逐漸加速下墜
-        velocity.y += gravity * Time.deltaTime;
-        // 利用 CharacterController 移動角色，包括垂直方向的重力效果
-        controller.Move(velocity * Time.deltaTime);
     }
 
-    // 利用射線檢測進行攻擊判定
+    /// <summary>
+    /// AttackRaycast() 利用射線檢測判斷攻擊是否命中敵人，
+    /// 若命中則對敵人造成傷害並施加擊退效果。
+    /// </summary>
     private void AttackRaycast()
     {
-        // 建立一條射線：從角色上方（模擬胸部高度）向前發射
+        // 射線從角色位置向上偏移後發出，方向與角色正前方一致
         Ray ray = new Ray(transform.position + Vector3.up, transform.forward);
         RaycastHit hit;
-        // 如果射線在 attackRange 內碰撞到物體
+        // 在 attackRange 距離內檢測射線碰撞
         if (Physics.Raycast(ray, out hit, attackRange))
         {
-            // 檢查碰撞物是否標記為 "Enemy"
+            // 如果碰撞物標籤為 "Enemy"，進行攻擊處理
             if (hit.collider.CompareTag("Enemy"))
             {
-                // 取得被碰撞物上的 EnemyController 腳本
+                // 嘗試獲取敵人的控制腳本
                 EnemyController enemy = hit.collider.GetComponent<EnemyController>();
                 if (enemy != null)
                 {
-                    // 使敵人受到傷害
+                    // 使敵人受到攻擊傷害
                     enemy.TakeDamage(attackDamage);
-                    // 計算施加在敵人身上的擊退方向（從玩家指向敵人）
+                    // 計算從玩家到敵人的方向（正規化後作為擊退方向）
                     Vector3 knockbackDir = (enemy.transform.position - transform.position).normalized;
-                    // 使敵人受到擊退效果
+                    // 對敵人施加擊退效果，推離玩家
                     enemy.ApplyKnockback(knockbackDir, attackKnockbackForce);
                 }
             }
         }
     }
 
-    // 當玩家受到外部擊退時呼叫此方法
+    /// <summary>
+    /// ApplyKnockback() 當玩家受到外部擊退（例如被敵人攻擊或碰到陷阱）時呼叫，
+    /// 根據指定方向與力度執行擊退效果，並重置相關狀態。
+    /// </summary>
+    /// <param name="direction">擊退的方向向量</param>
+    /// <param name="force">擊退力度</param>
     public void ApplyKnockback(Vector3 direction, float force)
     {
-        // 設定擊退方向為正規化後乘上力度
+        // 設定擊退方向，並乘上力度以獲得最終移動速度
         knockbackDirection = direction.normalized * force;
-        // 設定擊退持續時間
+        // 啟動擊退計時器
         knockbackTimer = knockbackDuration;
-        // 在受到擊退時，取消僵直狀態
+        // 清除僵直狀態，確保此次外力效果立即發生
         isStunned = false;
     }
 
-    // 當玩家受到攻擊時呼叫，處理傷害和動畫
+    /// <summary>
+    /// TakeDamage() 當玩家受到攻擊時呼叫，
+    /// 播放受擊動畫並扣除相應血量，若血量低於零則呼叫死亡邏輯。
+    /// </summary>
+    /// <param name="damage">攻擊造成的傷害數值</param>
     public void TakeDamage(float damage)
     {
-        // 撥放被攻擊動畫，請確保 Animator 中設有 "GetHit" 的 Trigger
+        // 播放受擊動畫，顯示玩家被攻擊的效果
         animator.SetTrigger("GetHit");
-
-        // 扣除血量
+        // 扣除玩家血量
         health -= damage;
-        // 如果血量小於等於 0，則執行死亡程序
+        // 當血量低於等於 0 時，觸發死亡程序
         if (health <= 0f)
         {
             Die();
         }
     }
 
-    // 處理玩家死亡邏輯
+    /// <summary>
+    /// Die() 處理玩家死亡時的行為，包括播放死亡動畫、禁用角色控制器，
+    /// 並將 GameObject 標籤移除以避免後續不必要的交互。
+    /// </summary>
     private void Die()
     {
-        // 在 Console 輸出死亡訊息
         Debug.Log("Player died.");
-        // 觸發死亡動畫，Animator 中應設有 "Die" 的 Trigger
+        // 播放死亡動畫
         animator.SetTrigger("Die");
-
-        // 設定死亡旗標，避免後續動作
+        // 標記玩家為死亡狀態，防止後續操作
         isDead = true;
-
-        // 停用角色控制器，防止角色在死亡後繼續移動
+        // 禁用 CharacterController 以停止角色移動與碰撞檢測
         controller.enabled = false;
-
-        // 改變標籤，讓敵人不再將其視作目標
+        // 移除玩家標籤，避免其他物件繼續識別為玩家
         gameObject.tag = "Untagged";
-
-        // 此處可以添加遊戲結束或重生的其他邏輯
     }
 
-    // 計算坡道對移動速度的影響，回傳速度乘數
+    /// <summary>
+    /// GetSlopeSpeedMultiplier() 根據角色下方地面的坡度計算一個速度倍率，
+    /// 坡度越陡，倍率越低，使角色在上坡或下坡時移動速度有所調整。
+    /// </summary>
+    /// <returns>移動速度的倍率</returns>
     float GetSlopeSpeedMultiplier()
     {
         RaycastHit hit;
-        // 從角色位置向下發射射線檢測地面
+        // 從角色位置向下發射射線，檢測地面狀態
         if (Physics.Raycast(transform.position, Vector3.down, out hit, 1.2f))
         {
-            // 計算地面法線與垂直方向之間的夾角，這就是坡度角
+            // 計算碰撞面法線與垂直方向的夾角，即坡度角
             float slopeAngle = Vector3.Angle(hit.normal, Vector3.up);
+            // 若坡度角超過最大允許角度，返回較低的速度倍率
             if (slopeAngle > maxSlopeAngle)
             {
-                // 如果坡度大於最大允許角度，返回較低的速度乘數
                 return slopeSpeedFactor;
             }
-            // 否則根據坡度角進行線性插值，返回介於 1 和 slopeSpeedFactor 之間的乘數
+            // 根據坡度角與最大角度的比例，線性內插獲得一個平滑的速度倍率
             return Mathf.Lerp(1f, slopeSpeedFactor, slopeAngle / maxSlopeAngle);
         }
-        // 若沒有檢測到地面，返回默認速度乘數 1
+        // 若無法檢測到地面，則返回正常移動速度倍率
         return 1f;
     }
 }
