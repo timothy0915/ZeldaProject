@@ -114,7 +114,12 @@ public class PlayerController : MonoBehaviour
                 attackTimer = attackCooldown;
             }
         }
+        
     }
+    
+
+
+
 
     // 處理玩家移動的邏輯
     private void MovePlayer()
