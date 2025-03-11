@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scripts/SenceFish/StartGame.unity
+    guid: afaac82c076beb14eaa084dcc7f4741b
+  - enabled: 1
     path: Assets/RPG Tiny Fantasy Forest PBR/Scene/OurBigIsland.unity
     guid: dc950ffe35d587b4cb76b17b86c42275
   - enabled: 0
