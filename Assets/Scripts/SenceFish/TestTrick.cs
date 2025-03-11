@@ -4,15 +4,9 @@ using UnityEngine;
 
 public class TestTrick : MonoBehaviour
 {
-    // Start is called before the first frame update
+    //試驗用 X自殘 Y治療 Z加最大血量
     public HealthBarController healthBarController;
     public HealthBarHUDTester healthBarHUDTester;
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
     void Update()
     {
         KeyInput();

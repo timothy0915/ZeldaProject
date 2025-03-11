@@ -29,12 +29,14 @@ public class PlayerStats : MonoBehaviour
 
     private void Start()
     {
+        //以player為主初始化
         health = player.health;
         maxHealth = player.maxHealth;
         maxTotalHealth = player.maxTotalHealth;
     }
     private void Update()
     {
+        //檢查player的血量有沒有因為其他程式降低並更新
         if (health != player.health) health = player.health; ClampHealth();
         if (maxHealth != player.maxHealth) maxHealth = player.maxHealth; ClampHealth();
         if (maxTotalHealth != player.maxTotalHealth) maxTotalHealth = player.maxTotalHealth; ClampHealth();
@@ -94,7 +96,7 @@ public class PlayerStats : MonoBehaviour
         if (onHealthChangedCallback != null)
             onHealthChangedCallback.Invoke();
     }
-    void DataApply()//把player的data複寫
+    void DataApply()//在使用這裡的函式改變數值之後用這條複寫player的資料
     {
         player.health = health;
         player.maxHealth = maxHealth;
