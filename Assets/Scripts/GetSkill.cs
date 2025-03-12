@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +11,8 @@ public class GetSkill : MonoBehaviour
     public Text dialogText;           // 對話框內顯示的文字
     public string dialog;             // 要顯示的對話內容
     public bool playerInRange;        // 判斷玩家是否進入觸發範圍
+    public AudioSource audioSource;       // 開箱音效
+    public AudioSource musicAudio;          // 在有音效時將音樂聲音調低
 
     // 寶箱的動畫控制器，必須在 Inspector 中指定對應的 Animator
     public Animator chestAnimator;
@@ -43,8 +46,14 @@ public class GetSkill : MonoBehaviour
             {
                 // 取得玩家的 PlayerController 腳本，並將血量恢復到最大值
                 PlayerController playerController = player.GetComponent<PlayerController>();
+               
                 if (playerController != null)
                 {
+                    //開啟音效物件並撥放
+                    audioSource.enabled = true;
+                    audioSource.Play();
+                    //降低音樂音量
+                    musicAudio.volume = 0.3f;
                     playerController.health = maxHealth;
                 }
             }
@@ -70,6 +79,9 @@ public class GetSkill : MonoBehaviour
             playerInRange = false;
             // 當玩家離開時，自動關閉對話框
             dialogBox.SetActive(false);
+            //關閉音效物件
+            audioSource.Stop();
+            audioSource.enabled = false;
         }
     }
 }
