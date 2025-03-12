@@ -64,7 +64,7 @@ public class EnemyAttack : MonoBehaviour
             // 如果 Animator 存在，則觸發攻擊動畫
             if (animator != null)
             {
-                animator.SetTrigger("Attack");
+                animator.SetTrigger("ATTACK");
             }
 
             // 計算擊退方向：從敵人指向玩家的方向
