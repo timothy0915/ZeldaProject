@@ -27,6 +27,11 @@ public class PlayerStats : MonoBehaviour
     private float maxHealth;
     private float maxTotalHealth;
 
+    public float AAhealth;
+    public float AAmaxHealth;
+    public float AAmaxTotalHealth;
+
+
     private void Start()
     {
         //以player為主初始化
@@ -36,6 +41,9 @@ public class PlayerStats : MonoBehaviour
     }
     private void Update()
     {
+        AAhealth = health;
+        AAmaxHealth = maxHealth;
+        AAmaxTotalHealth = maxTotalHealth;
         //檢查player的血量有沒有因為其他程式降低並更新
         if (health != player.health) health = player.health; ClampHealth();
         if (maxHealth != player.maxHealth) maxHealth = player.maxHealth; ClampHealth();
