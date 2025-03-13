@@ -117,7 +117,7 @@ MonoBehaviour:
   detectionRange: 10
   knockbackDuration: 0.5
   stunDuration: 0.5
-  health: 100
+  health: 3
   player: {fileID: 0}
   animator: {fileID: 3979819693298308362}
   isDead: 0
@@ -134,9 +134,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackRange: 1.5
-  attackCooldown: 2
+  attackCooldown: 3
   knockbackForce: 5
-  attackDamage: 10
+  attackDamage: 0.5
+  player: {fileID: 0}
 --- !u!143 &6108417555001107850
 CharacterController:
   m_ObjectHideFlags: 0

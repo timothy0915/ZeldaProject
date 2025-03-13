@@ -3,13 +3,15 @@
  */
 
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerStats : MonoBehaviour
 {
     public delegate void OnHealthChangedDelegate();
     public OnHealthChangedDelegate onHealthChangedCallback;
     public PlayerController controller;
-
+    public string targetSceneName;
+    private bool isReloading = false; // 避免多次觸發
     #region Sigleton
     private static PlayerStats instance;
     public static PlayerStats Instance
@@ -32,6 +34,10 @@ public class PlayerStats : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.R)) controller.health = maxHealth;
         if(health!= controller.health) health = controller.health; ClampHealth();
+        if (controller.isDead && !isReloading)
+        {
+            Invoke("Dying", 1.5f);
+        }
     }
 
     [SerializeField]
@@ -67,6 +73,11 @@ public class PlayerStats : MonoBehaviour
             if (onHealthChangedCallback != null)
                 onHealthChangedCallback.Invoke();
         }   
+    }
+    void Dying()
+    {
+        isReloading = true;
+        SceneManager.LoadScene(targetSceneName);
     }
 
     void ClampHealth()
