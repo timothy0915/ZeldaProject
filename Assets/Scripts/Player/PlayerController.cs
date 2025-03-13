@@ -58,7 +58,7 @@ public class PlayerController : MonoBehaviour
 
    
     [Header("血量設定")]
-    public float health = 100f;             // 玩家初始的血量值
+    public float health = 10f;             // 玩家初始的血量值
    
    
     private Vector3 velocity;             // 用來計算重力、跳躍與其他外力影響下的速度
