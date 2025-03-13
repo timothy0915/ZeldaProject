@@ -8,6 +8,7 @@ public class PlayerStats : MonoBehaviour
 {
     public delegate void OnHealthChangedDelegate();
     public OnHealthChangedDelegate onHealthChangedCallback;
+    public PlayerController controller;
 
     #region Sigleton
     private static PlayerStats instance;
@@ -21,6 +22,14 @@ public class PlayerStats : MonoBehaviour
         }
     }
     #endregion
+    private void Start()
+    {
+        health= controller.health;
+    }
+    private void Update()
+    {
+        if(health!= controller.health) health = controller.health; ClampHealth();
+    }
 
     [SerializeField]
     private float health;
@@ -60,7 +69,7 @@ public class PlayerStats : MonoBehaviour
     void ClampHealth()
     {
         health = Mathf.Clamp(health, 0, maxHealth);
-
+        controller.health = health;
         if (onHealthChangedCallback != null)
             onHealthChangedCallback.Invoke();
     }
