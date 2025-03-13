@@ -8,8 +8,6 @@ public class PlayerController : MonoBehaviour
     [Header("角色控制")]
     public CharacterController controller;  // 使用 Unity 的 CharacterController 處理碰撞和移動
     public Animator animator;               // 用於控制角色動畫
-    public AudioSource audioSource;         // 音效(目前只有死亡
-    public AudioSource musicAudio;          // 在有音效時將音樂聲音調低
 
     [Header("移動設定")]
     public float speed = 3f;                // 移動速度
@@ -232,11 +230,6 @@ public class PlayerController : MonoBehaviour
         
         // 觸發死亡動畫，Animator 中應設有 "Die" 的 Trigger
         animator.SetTrigger("Die");
-        
-        //撥放死亡音效
-        audioSource.Play();
-        //降低音樂音量
-        musicAudio.volume = 0.3f;
 
         // 設定死亡旗標，避免後續動作
         isDead = true;
