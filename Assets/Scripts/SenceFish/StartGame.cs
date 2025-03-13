@@ -7,6 +7,15 @@ public class StartGame : MonoBehaviour
 {
     // Start is called before the first frame update
     public string targetSceneName;
+
+    public void DelayedChangSence()
+    {
+        Invoke("ChangSence", 2.1f);
+    }
+    public void DelayedQuitGame()
+    {
+        Invoke("QuitGame", 6);
+    }
     public void ChangSence()
     {
         SceneManager.LoadScene(targetSceneName);
