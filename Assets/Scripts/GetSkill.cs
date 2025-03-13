@@ -34,7 +34,7 @@ public class GetSkill : MonoBehaviour
             // 觸發寶箱的開啟動畫，請確保 Animator 中有對應的 "OpenChest" Trigger
             if (chestAnimator != null)
             {
-                chestAnimator.SetTrigger("OpenChest");
+                chestAnimator.SetBool("OpenChest",true);
             }
 
             // 找到玩家物件，根據標籤 "Player"
@@ -68,6 +68,7 @@ public class GetSkill : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerInRange = false;
+            chestAnimator.SetBool("OpenChest", false);
             // 當玩家離開時，自動關閉對話框
             dialogBox.SetActive(false);
         }
