@@ -28,6 +28,7 @@ public class PlayerStats : MonoBehaviour
     }
     private void Update()
     {
+        if(Input.GetKeyDown(KeyCode.R)) controller.health = 100;
         if(health!= controller.health) health = controller.health; ClampHealth();
     }
 
