@@ -92,7 +92,7 @@ public class LootBox : MonoBehaviour
         animator = GetComponent<Animator>();
 
         // set the animation to bounce or not
-        BounceBox(bouncingBox);
+    //    BounceBox(bouncingBox);
     }
 
     /// <summary>
@@ -113,12 +113,13 @@ public class LootBox : MonoBehaviour
     /// Bounces the box.
     /// </summary>
     /// <param name="bounceIt">If set to <c>true</c> bounce it.</param>
+    /*
     public void BounceBox (bool bounceIt)
     {
         // flag the animator property "bounce" accordingly
         if (animator) animator.SetBool("bounce", bounceIt);
     }
-
+    */
     /// <summary>
     /// Open the box.
     /// </summary>

@@ -30,7 +30,7 @@ public class LootBoxEditor : Editor
         }
 
         chest.bouncingBox = EditorGUILayout.Toggle("Bouncing Animation", chest.bouncingBox);
-        chest.BounceBox(chest.bouncingBox);
+       // chest.BounceBox(chest.bouncingBox);
 
         chest.closeOnExit = EditorGUILayout.Toggle("Close On Exit", chest.closeOnExit);
 
