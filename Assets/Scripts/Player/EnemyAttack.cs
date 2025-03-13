@@ -15,7 +15,7 @@ public class EnemyAttack : MonoBehaviour
     private float attackTimer = 0f;       // 用來計時攻擊冷卻的計時器
     private Animator animator;            // 控制動畫的元件
     private EnemyController enemyController; // 參考同一個物件上的 EnemyController，用來檢查敵人的生命狀態
-
+    public GameObject player;
     // Start() 函式在遊戲開始時執行一次
     private void Start()
     {
@@ -53,7 +53,7 @@ public class EnemyAttack : MonoBehaviour
             return;
 
         // 根據 Tag 找到玩家物件
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
+      player = GameObject.FindGameObjectWithTag("Player");
         if (player == null) return; // 如果找不到玩家則跳出函式
 
         // 計算敵人和玩家之間的距離
@@ -65,24 +65,29 @@ public class EnemyAttack : MonoBehaviour
             if (animator != null)
             {
                 animator.SetTrigger("Attack");
+                Invoke("Attaking", 0.5f);
             }
 
-            // 計算擊退方向：從敵人指向玩家的方向
-            Vector3 knockbackDirection = player.transform.position - transform.position;
-            // 保持水平方向，不考慮 y 軸
-            knockbackDirection.y = 0;
-            // 將方向向量正規化，使其長度為 1
-            knockbackDirection.Normalize();
+            
+        }
+    }
+    void Attaking()
+    {
+        // 計算擊退方向：從敵人指向玩家的方向
+        Vector3 knockbackDirection = player.transform.position - transform.position;
+        // 保持水平方向，不考慮 y 軸
+        knockbackDirection.y = 0;
+        // 將方向向量正規化，使其長度為 1
+        knockbackDirection.Normalize();
 
-            // 取得玩家的 PlayerController 來對玩家施加傷害和擊退效果
-            PlayerController playerController = player.GetComponent<PlayerController>();
-            if (playerController != null)
-            {
-                // 呼叫玩家的 ApplyKnockback 方法施加擊退效果
-                playerController.ApplyKnockback(knockbackDirection, knockbackForce);
-                // 呼叫玩家的 TakeDamage 方法扣除生命值
-                playerController.TakeDamage(attackDamage);
-            }
+        // 取得玩家的 PlayerController 來對玩家施加傷害和擊退效果
+        PlayerController playerController = player.GetComponent<PlayerController>();
+        if (playerController != null)
+        {
+            // 呼叫玩家的 ApplyKnockback 方法施加擊退效果
+            playerController.ApplyKnockback(knockbackDirection, knockbackForce);
+            // 呼叫玩家的 TakeDamage 方法扣除生命值
+            playerController.TakeDamage(attackDamage);
         }
     }
 }
