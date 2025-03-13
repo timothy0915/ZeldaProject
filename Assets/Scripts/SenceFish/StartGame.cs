@@ -7,7 +7,11 @@ public class StartGame : MonoBehaviour
 {
     // Start is called before the first frame update
     public string targetSceneName;
-
+    private void Start()
+    {
+        Cursor.lockState = CursorLockMode.None; // ¸ÑÂê·Æ¹«
+        Cursor.visible = true; // Åã¥Ü·Æ¹«
+    }
     public void DelayedChangSence()
     {
         Invoke("ChangSence", 2.1f);
