@@ -25,10 +25,12 @@ public class PlayerStats : MonoBehaviour
     private void Start()
     {
         health= controller.health;
+        maxHealth = health;
+        maxTotalHealth = health;
     }
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.R)) controller.health = 100;
+        if(Input.GetKeyDown(KeyCode.R)) controller.health = maxHealth;
         if(health!= controller.health) health = controller.health; ClampHealth();
     }
 
