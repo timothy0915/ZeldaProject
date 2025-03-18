@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
 
     
     [Header("攻擊設定")]
-    public float attackRange = 2f;          // 攻擊時使用 Raycast 檢測的射程距離
+    public float attackRange = 2.5f;          // 攻擊時使用 Raycast 檢測的射程距離
     public float attackDamage = 20f;        // 攻擊時造成敵人的傷害值
     public float attackKnockbackForce = 5f; // 攻擊時對敵人施加的擊退力量
     public float attackCooldown = 0.5f;     // 攻擊後需要等待的冷卻時間
