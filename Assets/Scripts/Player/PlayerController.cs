@@ -12,9 +12,9 @@ public class PlayerController : MonoBehaviour
     [Header("角色控制")]
     public CharacterController controller;  // 利用 Unity 內建的 CharacterController 處理角色的碰撞和移動
     public Animator animator;               // 用於控制角色動畫的 Animator 元件
-    
+    public MusicPlayer musicPlayer;
 
-    
+
     [Header("移動設定")]
     public float speed = 3f;                // 角色的基本移動速度
     public float gravity = -9.81f;          // 模擬重力的數值（負值表示向下）
@@ -154,6 +154,7 @@ public class PlayerController : MonoBehaviour
                 else if (attackCombo == 2)
                     animator.SetTrigger("attack2");
 
+
                 // 執行攻擊檢測（利用 Raycast 判定前方是否有敵人命中）
                 AttackRaycast();
                 // 重置攻擊冷卻計時器
@@ -247,8 +248,20 @@ public class PlayerController : MonoBehaviour
                     Vector3 knockbackDir = (enemy.transform.position - transform.position).normalized;
                     // 對敵人施加擊退效果，推離玩家
                     enemy.ApplyKnockback(knockbackDir, attackKnockbackForce);
+                    musicPlayer.s_hit();
+                    Debug.Log("中");
                 }
             }
+            else
+            {
+                musicPlayer.s_swing();
+                Debug.Log("揮");
+            }
+        }
+        else
+        {
+            musicPlayer.s_swing();
+            Debug.Log("揮");
         }
     }
 

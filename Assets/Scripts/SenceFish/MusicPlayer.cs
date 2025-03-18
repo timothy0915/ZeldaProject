@@ -7,6 +7,8 @@ public class MusicPlayer : MonoBehaviour
     public AudioSource musicAudio;
     public AudioClip openChest;
     public AudioClip linkDying;
+    public AudioClip S_swing;
+    public AudioClip S_hit;
     public PlayerController controller;
     public GameObject GetSkil;
     public bool isDied;
@@ -32,7 +34,7 @@ public class MusicPlayer : MonoBehaviour
     }
     void OpenChest()
     {
-        musicAudio.PlayOneShot(openChest, 1);
+        musicAudio.PlayOneShot(openChest, 0.2f);
         musicAudio.volume = 0.5f;
         Invoke("TurnBackVolume", 3);
     }
@@ -45,5 +47,13 @@ public class MusicPlayer : MonoBehaviour
    void TurnBackVolume()
     {
         musicAudio.volume = 1;
+    }
+    public void s_swing()
+    {
+        musicAudio.PlayOneShot(S_swing, 1);
+    }
+    public void s_hit()
+    {
+        musicAudio.PlayOneShot(S_hit, 1);
     }
 }
