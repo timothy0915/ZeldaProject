@@ -14,8 +14,7 @@ public class GetSkill : MonoBehaviour
     // 寶箱的動畫控制器，必須在 Inspector 中指定對應的 Animator
     public Animator chestAnimator;
 
-    // 最大血量值，這裡假設玩家的最大血量為 100f
-    public float maxHealth = 100f;
+    public PlayerStats playerStats;
 
     // Update() 每一幀都會被呼叫，監聽玩家按鍵操作
     void Update()
@@ -45,7 +44,7 @@ public class GetSkill : MonoBehaviour
                 PlayerController playerController = player.GetComponent<PlayerController>();
                 if (playerController != null)
                 {
-                    playerController.health = maxHealth;
+                    playerController.health = playerStats.MaxHealth;
                 }
             }
         }
