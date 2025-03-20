@@ -7,26 +7,31 @@ public class fireattack : MonoBehaviour
     public GameObject fireballPrefab; // 火球預製物
     public Transform firePoint;       // 發射火球的位置
     public float fireRate = 2f;       // 發射間隔（秒）
- 
+    public float fireDelay = 0.5f;    // 發射延遲
+
+    private Animator animator;
 
     private Transform player; // 玩家目標
     private void Start()
     {
-        StartCoroutine(FireballRoutine()); // 開始循環發射火球
+        animator = GetComponent<Animator>(); // 取得動畫控制器
     }
 
-    IEnumerator FireballRoutine()
+    public void CastMagicAttack()
     {
-        while (true) // 無限循環，直到怪物死亡
+        if (animator != null)
         {
-            yield return new WaitForSeconds(fireRate); // 等待指定時間
-            ShootFireball();
+            animator.SetTrigger("MagicAttack"); // 觸發魔法攻擊動畫
+            Invoke(nameof(ShootFireball), fireDelay); // 讓火球稍後發射
         }
     }
 
-    void ShootFireball()
+    // **發射火球**
+    private void ShootFireball()
     {
-        GameObject fireball = Instantiate(fireballPrefab, firePoint.position, firePoint.rotation);
-      
+        if (fireballPrefab != null && firePoint != null)
+        {
+            Instantiate(fireballPrefab, firePoint.position, firePoint.rotation);
+        }
     }
 }
