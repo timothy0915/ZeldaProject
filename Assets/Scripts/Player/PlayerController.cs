@@ -229,39 +229,39 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void AttackRaycast()
     {
-        // 射線從角色位置向上偏移後發出，方向與角色正前方一致
-        Ray ray = new Ray(transform.position + Vector3.up, transform.forward);
-        RaycastHit hit;
-        // 在 attackRange 距離內檢測射線碰撞
-        if (Physics.Raycast(ray, out hit, attackRange))
+        float attackRadius = 1.5f; // 攻擊半徑
+        float attackAngle = 90f; // 扇形角度
+
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, attackRadius);
+        bool hitEnemy = false;
+
+        foreach (var hit in hitColliders)
         {
-            // 如果碰撞物標籤為 "Enemy"，進行攻擊處理
-            if (hit.collider.CompareTag("Enemy"))
+            if (hit.CompareTag("Enemy"))
             {
-                // 嘗試獲取敵人的控制腳本
-                EnemyController enemy = hit.collider.GetComponent<EnemyController>();
-                if (enemy != null)
+                Vector3 dirToEnemy = (hit.transform.position - transform.position).normalized;
+                float angle = Vector3.Angle(transform.forward, dirToEnemy);
+
+                if (angle <= attackAngle / 2) // 檢查敵人是否在扇形內
                 {
-                    // 使敵人受到攻擊傷害
-                    enemy.TakeDamage(attackDamage);
-                    // 計算從玩家到敵人的方向（正規化後作為擊退方向）
-                    Vector3 knockbackDir = (enemy.transform.position - transform.position).normalized;
-                    // 對敵人施加擊退效果，推離玩家
-                    enemy.ApplyKnockback(knockbackDir, attackKnockbackForce);
-                    musicPlayer.s_hit();
-                    Debug.Log("中");
+                    EnemyController enemy = hit.GetComponent<EnemyController>();
+                    if (enemy != null)
+                    {
+                        enemy.TakeDamage(attackDamage);
+                        Vector3 knockbackDir = dirToEnemy;
+                        enemy.ApplyKnockback(knockbackDir, attackKnockbackForce);
+                        musicPlayer.s_hit();
+                        Debug.Log("擊中敵人");
+                        hitEnemy = true;
+                    }
                 }
             }
-            else
-            {
-                musicPlayer.s_swing();
-                Debug.Log("揮");
-            }
         }
-        else
+
+        if (!hitEnemy)
         {
             musicPlayer.s_swing();
-            Debug.Log("揮");
+            Debug.Log("空揮");
         }
     }
 
