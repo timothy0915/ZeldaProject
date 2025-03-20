@@ -62,7 +62,7 @@ public class PlayerController : MonoBehaviour
    
    
     private Vector3 velocity;             // 用來計算重力、跳躍與其他外力影響下的速度
-    private bool isGrounded;              // 是否接觸地面的旗標
+    public bool isGrounded;              // 是否接觸地面的旗標
     private Vector3 moveDirection;        // 玩家移動方向的向量
     private Vector3 knockbackDirection;   // 擊退時的方向向量
     private float knockbackTimer = 0f;    // 擊退狀態的持續倒計時
