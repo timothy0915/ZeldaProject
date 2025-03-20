@@ -10,6 +10,9 @@ TagManager:
   - Sheld
   - Trap
   - Enemy
+  - enemy
+  - Grass
+  - FireBall
   layers:
   - Default
   - TransparentFX
