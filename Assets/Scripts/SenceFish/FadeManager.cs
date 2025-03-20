@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class FadeManager : MonoBehaviour
 {
+    public GameObject Fade;
     public CanvasGroup canvasGroup;
     public bool opening;
     public bool closed;
@@ -12,15 +13,14 @@ public class FadeManager : MonoBehaviour
     public RectTransform uiElement;
     public Vector2 startPos = new Vector2(-1600, 1000);
     public Vector2 endPos = new Vector2(1600, -700);
-    public float duration = 1.5f; // 過渡時間
+    public float duration = 0.5f; // 過渡時間
     // Start is called before the first frame update
     
     void Start()
     {
-        canvasGroup = GetComponent<CanvasGroup>();
-        canvasGroup.alpha = 1.0f;
-        fadeSpeed = 0.01f;
         opening = true;
+        if (opening) canvasGroup.alpha = 1.0f;
+        fadeSpeed = 0.01f;
         closed = false;
         moved = false;
     }
@@ -30,33 +30,17 @@ public class FadeManager : MonoBehaviour
     {
         if (opening)
         {
-            closed = false;
-           canvasGroup.alpha = Mathf.Lerp(canvasGroup.alpha,0, fadeSpeed);
-            // canvasGroup.alpha -= canvasGroup.alpha * Time.deltaTime;
-            Debug.Log(canvasGroup.alpha);
-            if (canvasGroup.alpha <= 0.05)
-            {
-                canvasGroup.alpha = 0;
-                opening= false;
-                moved= false;
-            }
+            Opening();
         }
         if (closed)
         {
-            opening = false;
-            canvasGroup.alpha = Mathf.Lerp(  canvasGroup.alpha,1, fadeSpeed);
-            Debug.Log(canvasGroup.alpha);
-            if (!moved) StartMove(); moved = true;
-            if (canvasGroup.alpha >= 0.995f)
-            {
-                canvasGroup.alpha = 1;
-                closed = false;
-            }
+            Closed();
         }
     }
     public void StartMove()
     {
         StopAllCoroutines(); // 防止多次呼叫導致異常
+        closed = true;
         StartCoroutine(MoveUI(uiElement, startPos, endPos, duration));
     }
     IEnumerator MoveUI(RectTransform target, Vector2 start, Vector2 end, float time)
@@ -69,6 +53,32 @@ public class FadeManager : MonoBehaviour
             yield return null;
         }
         target.anchoredPosition = end; // 確保到達最終位置
+    }
+   void Closed()
+    {
+        Fade.SetActive(true);
+        opening = false;
+        canvasGroup.alpha = Mathf.Lerp(canvasGroup.alpha, 1, fadeSpeed);
+        if (canvasGroup.alpha >= 0.995f)
+        {
+            canvasGroup.alpha = 1;
+            closed = false;
+        }
+    }
+    void Opening()
+    {
+        Fade.SetActive(true);
+        closed = false;
+        canvasGroup.alpha = Mathf.Lerp(canvasGroup.alpha, 0, fadeSpeed);
+        // canvasGroup.alpha -= canvasGroup.alpha * Time.deltaTime;
+        Debug.Log(canvasGroup.alpha);
+        if (canvasGroup.alpha <= 0.05)
+        {
+            canvasGroup.alpha = 0;
+            opening = false;
+            moved = false;
+            Fade.SetActive(false);
+        }
     }
 
 
