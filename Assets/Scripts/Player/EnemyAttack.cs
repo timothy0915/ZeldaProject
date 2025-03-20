@@ -73,21 +73,34 @@ public class EnemyAttack : MonoBehaviour
     }
     void Attaking()
     {
-        // 計算擊退方向：從敵人指向玩家的方向
-        Vector3 knockbackDirection = player.transform.position - transform.position;
-        // 保持水平方向，不考慮 y 軸
-        knockbackDirection.y = 0;
-        // 將方向向量正規化，使其長度為 1
-        knockbackDirection.Normalize();
+        if (player == null) return; // 如果找不到玩家則跳出函式
 
-        // 取得玩家的 PlayerController 來對玩家施加傷害和擊退效果
-        PlayerController playerController = player.GetComponent<PlayerController>();
-        if (playerController != null)
+        // 計算敵人和玩家之間的距離
+        float distance = Vector3.Distance(transform.position, player.transform.position);
+        // 如果玩家在攻擊範圍內則進行攻擊
+        if (distance <= attackRange)
         {
-            // 呼叫玩家的 ApplyKnockback 方法施加擊退效果
-            playerController.ApplyKnockback(knockbackDirection, knockbackForce);
-            // 呼叫玩家的 TakeDamage 方法扣除生命值
-            playerController.TakeDamage(attackDamage);
+            // 如果 Animator 存在，則觸發攻擊
+            if (animator != null)
+            {
+                // 計算擊退方向：從敵人指向玩家的方向
+                Vector3 knockbackDirection = player.transform.position - transform.position;
+                // 保持水平方向，不考慮 y 軸
+                knockbackDirection.y = 0;
+                // 將方向向量正規化，使其長度為 1
+                knockbackDirection.Normalize();
+
+                // 取得玩家的 PlayerController 來對玩家施加傷害和擊退效果
+                PlayerController playerController = player.GetComponent<PlayerController>();
+                if (playerController != null)
+                {
+                    // 呼叫玩家的 ApplyKnockback 方法施加擊退效果
+                    playerController.ApplyKnockback(knockbackDirection, knockbackForce);
+                    // 呼叫玩家的 TakeDamage 方法扣除生命值
+                    playerController.TakeDamage(attackDamage);
+                }
+            }
         }
+        
     }
 }
