@@ -19,12 +19,13 @@ public class BladeShadow : MonoBehaviour
     void Update()
     {
         if (animator.GetCurrentAnimatorStateInfo(1).IsName("Attack01_SwordAndShiled")) attack01();
+        else frame01 = 0;
 
         if (animator.GetCurrentAnimatorStateInfo(1).IsName("Attack02_SwordAndShiled")) attack02();
+        else frame02 = 0;
     }
   void attack01()
     {
-        frame02 = 0;
         frame01 += Time.deltaTime;
         if (frame01 > 0.1f && frame01 < 0.22f) swordTrail.enabled = true;
         else swordTrail.enabled = false;
@@ -33,7 +34,6 @@ public class BladeShadow : MonoBehaviour
 
     void attack02()
     {
-        frame01 = 0;
         frame02 += Time.deltaTime;
         if (frame02 > 0.1f && frame02 < 0.22f) swordTrail.enabled = true;
         else swordTrail.enabled = false;
