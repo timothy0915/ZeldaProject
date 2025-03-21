@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // 控制敵人行為的腳本，例如移動、受傷、死亡等
-public class EnemyController : MonoBehaviour
+public class EnemyController : MonoBehaviour, IDamageable
 {
+    public Transform MyTransform => transform;
     [Header("移動參數")]
     public float speed = 3f;              // 移動速度
     public float detectionRange = 10f;    // 偵測玩家的距離
