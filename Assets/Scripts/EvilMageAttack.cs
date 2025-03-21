@@ -64,17 +64,17 @@ public class EvilMageAttack : MonoBehaviour
             if (animator != null)
             {
                 animator.SetTrigger("Attack");
-                Invoke("Attaking", 0.5f);
+                Invoke("Attacking", 0.5f);
             }
         }
             //超出攻擊範圍使用魔法攻擊
             else 
             {
                 animator.SetTrigger("MagicAttack");
-                Invoke("Attaking", 0.5f);
+                Invoke("Attacking", 0.5f);
             }
 
-        void Attaking()
+        void Attacking()
         {
             // 計算擊退方向：從敵人指向玩家的方向
             Vector3 knockbackDirection = player.transform.position - transform.position;
