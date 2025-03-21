@@ -57,9 +57,16 @@ public class FireBallAttack : MonoBehaviour
     // **發射火球**
     private void ShootFireball()
     {
-        if (fireballPrefab != null && firePoint != null)
+        if (fireballPrefab != null && firePoint != null && player != null)
         {
-            Instantiate(fireballPrefab, firePoint.position, firePoint.rotation);
+            // 計算 XZ 方向的朝向玩家方向
+            Vector3 directionToPlayer = (player.position - firePoint.position);
+            directionToPlayer.y = 0f;
+            Quaternion rotation = Quaternion.LookRotation(directionToPlayer);
+
+            // 產生火球並朝向玩家方向（只在 XZ）
+            Instantiate(fireballPrefab, firePoint.position, rotation);
         }
     }
+
 }

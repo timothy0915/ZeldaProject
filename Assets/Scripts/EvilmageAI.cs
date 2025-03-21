@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EvilmageAI : MonoBehaviour    //使各項AI統一整合
+public class EvilmageAI : MonoBehaviour, IDamageable   //IDamageable使各項AI統一整合
 
 {
     [Header("移動參數")]
@@ -23,6 +23,7 @@ public class EvilmageAI : MonoBehaviour    //使各項AI統一整合
     private float stunTimer = 0f;        // 記錄僵直效果持續時間的計時器
     private bool isStunned = false;      // 是否處於僵直狀態
     public bool isDead = false;          // 是否已經死亡
+    public Transform MyTransform => transform;
 
     // Start() 在遊戲開始時執行一次
     private void Start()
