@@ -95,7 +95,7 @@ public class PlayerController : MonoBehaviour
 
         // 地面檢測：利用 CharacterController 的 isGrounded 或 Raycast 來確認角色是否在地面上
         // 此處同時檢查兩種方式以提高穩定性
-        isGrounded = controller.isGrounded || Physics.Raycast(transform.position, Vector3.down, ground_distance + 0.1f, ground_mask);
+        isGrounded = controller.isGrounded || Physics.Raycast(transform.position, Vector3.down, ground_distance + 0.4f, ground_mask);
         if (isGrounded && velocity.y < 0)
         {
             // 當角色落地時，將垂直速度設為輕微負值以保證持續接地，避免因速度過大造成穿透
