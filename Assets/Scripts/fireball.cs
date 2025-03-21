@@ -31,7 +31,7 @@ public class Fireball : MonoBehaviour
             }
             Destroy(gameObject); // 火球消失
         }
-        else if (other.CompareTag("Wall"))
+        else if (other.CompareTag("Collider"))
         {
             Destroy(gameObject); // 碰到牆壁就銷毀
         }

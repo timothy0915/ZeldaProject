@@ -6,9 +6,13 @@ using UnityEngine;
 /// 玩家控制腳本：負責處理玩家的移動、攻擊、跳躍、受到攻擊以及死亡等狀態。
 /// 利用 Unity 的 CharacterController 來實現碰撞檢測與物理移動，並使用 Animator 控制動畫播放。
 /// </summary>
+/// <summary>
+/// 玩家控制腳本：負責處理玩家的移動、攻擊、跳躍、受到攻擊以及死亡等狀態。
+/// 利用 Unity 的 CharacterController 來實現碰撞檢測與物理移動，並使用 Animator 控制動畫播放。
+/// </summary>
 public class PlayerController : MonoBehaviour
 {
-    
+
     [Header("角色控制")]
     public CharacterController controller;  // 利用 Unity 內建的 CharacterController 處理角色的碰撞和移動
     public Animator animator;               // 用於控制角色動畫的 Animator 元件
@@ -19,48 +23,48 @@ public class PlayerController : MonoBehaviour
     public float speed = 3f;                // 角色的基本移動速度
     public float gravity = -9.81f;          // 模擬重力的數值（負值表示向下）
     public float jumpHeight = 1f;           // 跳躍能達到的高度
-   
 
-   
+
+
     [Header("地面檢測")]
     public Transform ground_check;          // 地面檢測點，通常放在角色腳部附近
     public float ground_distance = 0.5f;      // 以此半徑進行地面碰撞檢查
     public LayerMask ground_mask;           // 指定哪些 Layer 被認定為地面（例如 Terrain、Platform 等）
-    
 
-    
+
+
     [Header("坡度處理")]
     public float slopeSpeedFactor = 0.5f;   // 當角色在坡道上時，移動速度的倍率（越小代表坡度大時速度降低得越明顯）
     public float maxSlopeAngle = 45f;       // 允許角色移動的最大坡度角度，超過此角度後移動速度會被進一步調整
-  
 
-    
+
+
     [Header("擊退設定")]
     public float knockbackDuration = 0.5f;  // 當角色受到擊退時，持續移動的時間
     public float stunDuration = 0.5f;       // 擊退結束後，角色處於僵直狀態的持續時間（無法操作）
-   
 
-    
+
+
     [Header("攻擊設定")]
     public float attackRange = 2.5f;          // 攻擊時使用 Raycast 檢測的射程距離
     public float attackDamage = 20f;        // 攻擊時造成敵人的傷害值
     public float attackKnockbackForce = 5f; // 攻擊時對敵人施加的擊退力量
     public float attackCooldown = 0.5f;     // 攻擊後需要等待的冷卻時間
     private float attackTimer = 0f;         // 用來計時攻擊冷卻的計時器
-   
 
-   
+
+
     // 透過連擊變數控制攻擊招式連續輸入的狀態
     private int attackCombo = 0;            // 目前的連擊狀態（例如 1 表示第一招，2 表示第二招）
     public float comboResetTime = 1.0f;       // 連擊輸入間隔，若超過這個時間則重置連擊狀態
     private float comboTimer = 0f;            // 計時連擊間隔的倒計時器
-   
 
-   
+
+
     [Header("血量設定")]
     public float health = 100f;             // 玩家初始的血量值
-   
-   
+
+
     private Vector3 velocity;             // 用來計算重力、跳躍與其他外力影響下的速度
     private bool isGrounded;              // 是否接觸地面的旗標
     private Vector3 moveDirection;        // 玩家移動方向的向量
@@ -69,7 +73,7 @@ public class PlayerController : MonoBehaviour
     private float stunTimer = 0f;         // 僵直狀態的倒計時
     private bool isStunned = false;       // 是否正處於僵直狀態（無法操作）
     public bool isDead = false;           // 玩家是否已經死亡
-   
+
 
     // Start() 在遊戲開始時執行一次，通常用來初始化必要元件
     void Start()

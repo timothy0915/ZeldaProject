@@ -2,17 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EvilmageAI : MonoBehaviour
+public class EvilmageAI : MonoBehaviour    //使各項AI統一整合
+
 {
     [Header("移動參數")]
-    public float speed = 1f;              // 移動速度
-    public float detectionRange = 5f;    // 偵測玩家的距離
+    public float speed = 0.5f;              // 移動速度
+    public float detectionRange = 10f;      // 偵測玩家的距離
     public float knockbackDuration = 0.5f;  // 擊退持續的時間
     public float stunDuration = 0.5f;       // 僵直持續的時間
 
     [Header("血量設定")]
-    public float health = 3f;           // 敵人初始血量
-
+    public float health = 3f;             // 敵人初始血量
     public Transform player;              // 玩家物件的 Transform
     public Animator animator;             // 控制動畫的 Animator
 
@@ -181,10 +181,10 @@ public class EvilmageAI : MonoBehaviour
         characterController.enabled = false;
 
         // 如果存在攻擊腳本，則停用攻擊行為
-        EnemyAttack enemyAttack = GetComponent<EnemyAttack>();
-        if (enemyAttack != null)
+        EvilmageAI EvilmageAI = GetComponent<EvilmageAI>();
+        if (EvilmageAI != null)
         {
-            enemyAttack.enabled = false;
+            EvilmageAI.enabled = false;
         }
 
         // 啟動協程，等待死亡動畫播放完畢後銷毀物件

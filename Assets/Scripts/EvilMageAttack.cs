@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class EvilMageAttack : MonoBehaviour
+
 {
     // 攻擊參數設定
-    public float attackRange = 1.5f;      // 攻擊有效範圍（敵人到玩家的距離）
+    public float attackRange = 2f;      // 攻擊有效範圍（敵人到玩家的距離）
     public float attackCooldown = 2f;     // 攻擊間隔時間（攻擊冷卻時間）
     public float knockbackForce = 5f;     // 攻擊時施加在玩家身上的擊退力度
     public float attackDamage = 2f;      // 攻擊造成的傷害量
+    public float fireballattackrange = 10f;   //火球攻擊距離
+
 
     // 私有變數
     private float attackTimer = 0f;       // 用來計時攻擊冷卻的計時器
@@ -67,31 +70,32 @@ public class EvilMageAttack : MonoBehaviour
                 Invoke("Attacking", 0.5f);
             }
         }
-            //超出攻擊範圍使用魔法攻擊
-            else 
-            {
-                animator.SetTrigger("MagicAttack");
-                Invoke("Attacking", 0.5f);
-            }
-
-        void Attacking()
+        //超出攻擊範圍使用魔法攻擊
+        else if (distance > attackRange && distance <= fireballattackrange)
         {
-            // 計算擊退方向：從敵人指向玩家的方向
-            Vector3 knockbackDirection = player.transform.position - transform.position;
-            // 保持水平方向，不考慮 y 軸
-            knockbackDirection.y = 0;
-            // 將方向向量正規化，使其長度為 1
-            knockbackDirection.Normalize();
+            animator.SetTrigger("MagicAttack");
+            Invoke("Attacking", 0.5f);
+        }
 
-            // 取得玩家的 PlayerController 來對玩家施加傷害和擊退效果
-            PlayerController playerController = player.GetComponent<PlayerController>();
-            if (playerController != null)
-            {
-                // 呼叫玩家的 ApplyKnockback 方法施加擊退效果
-                playerController.ApplyKnockback(knockbackDirection, knockbackForce);
-                // 呼叫玩家的 TakeDamage 方法扣除生命值
-                playerController.TakeDamage(attackDamage);
-            }
+
+    }
+    void Attacking()
+    {
+        // 計算擊退方向：從敵人指向玩家的方向
+        Vector3 knockbackDirection = player.transform.position - transform.position;
+        // 保持水平方向，不考慮 y 軸
+        knockbackDirection.y = 0;
+        // 將方向向量正規化，使其長度為 1
+        knockbackDirection.Normalize();
+
+        // 取得玩家的 PlayerController 來對玩家施加傷害和擊退效果
+        PlayerController playerController = player.GetComponent<PlayerController>();
+        if (playerController != null)
+        {
+            // 呼叫玩家的 ApplyKnockback 方法施加擊退效果
+            playerController.ApplyKnockback(knockbackDirection, knockbackForce);
+            // 呼叫玩家的 TakeDamage 方法扣除生命值
+            playerController.TakeDamage(attackDamage);
         }
     }
 }
