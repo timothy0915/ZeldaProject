@@ -13,16 +13,18 @@ public class FadeManager : MonoBehaviour
     public RectTransform uiElement;
     public Vector2 startPos = new Vector2(-1600, 1000);
     public Vector2 endPos = new Vector2(1600, -700);
-    public float duration = 0.5f; // 過渡時間
+    public float duration = 0.1f; // 過渡時間
+    public float delayTime = 1.5f;
     // Start is called before the first frame update
     
     void Start()
     {
         opening = true;
-        if (opening) canvasGroup.alpha = 1.0f;
+        canvasGroup.alpha = 1.0f;
         fadeSpeed = 0.01f;
         closed = false;
         moved = false;
+        delayTime = 1.5f;
     }
 
     // Update is called once per frame
@@ -40,15 +42,18 @@ public class FadeManager : MonoBehaviour
     public void StartMove()
     {
         StopAllCoroutines(); // 防止多次呼叫導致異常
-        closed = true;
         StartCoroutine(MoveUI(uiElement, startPos, endPos, duration));
     }
     IEnumerator MoveUI(RectTransform target, Vector2 start, Vector2 end, float time)
     {
         float elapsedTime = 0f;
-        while (elapsedTime < time)
+        while (elapsedTime < time+delayTime)
         {
-            target.anchoredPosition = Vector2.Lerp(start, end, elapsedTime / time);
+            if (elapsedTime >= delayTime)
+            {
+                target.anchoredPosition = Vector2.Lerp(start, end, (elapsedTime - delayTime) / time);
+                closed = true;
+            }
             elapsedTime += Time.deltaTime;
             yield return null;
         }
