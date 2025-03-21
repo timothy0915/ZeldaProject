@@ -12,6 +12,8 @@ public class PlayerStats : MonoBehaviour
     public PlayerController controller;
     public string targetSceneName;
     private bool isReloading = false; // 避免多次觸發
+    public StartGame startGame;
+
     #region Sigleton
     private static PlayerStats instance;
     public static PlayerStats Instance
@@ -36,7 +38,7 @@ public class PlayerStats : MonoBehaviour
         if(health!= controller.health) health = controller.health; ClampHealth();
         if (controller.isDead && !isReloading)
         {
-            Invoke("Dying", 1.5f);
+            Invoke("Dying", 2f);
         }
     }
 
@@ -77,7 +79,7 @@ public class PlayerStats : MonoBehaviour
     void Dying()
     {
         isReloading = true;
-        SceneManager.LoadScene(targetSceneName);
+        startGame.DelayedChangSence();
     }
 
     void ClampHealth()
