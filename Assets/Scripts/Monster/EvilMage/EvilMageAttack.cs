@@ -6,7 +6,7 @@ public class EvilMageAttack : MonoBehaviour
 
 {
     // 攻擊參數設定
-    public float attackRange = 2f;      // 攻擊有效範圍（敵人到玩家的距離）
+    public float attackRange = 1.5f;      // 攻擊有效範圍（敵人到玩家的距離）
     public float attackCooldown = 2f;     // 攻擊間隔時間（攻擊冷卻時間）
     public float knockbackForce = 5f;     // 攻擊時施加在玩家身上的擊退力度
     public float attackDamage = 2f;      // 攻擊造成的傷害量

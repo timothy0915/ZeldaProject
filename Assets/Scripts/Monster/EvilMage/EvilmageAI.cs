@@ -6,7 +6,7 @@ public class EvilmageAI : MonoBehaviour, IDamageable   //IDamageable使各項AI統一
 
 {
     [Header("移動參數")]
-    public float speed = 0.5f;              // 移動速度
+    public float speed = 0f;              // 移動速度
     public float detectionRange = 10f;      // 偵測玩家的距離
     public float knockbackDuration = 0.5f;  // 擊退持續的時間
     public float stunDuration = 0.5f;       // 僵直持續的時間
