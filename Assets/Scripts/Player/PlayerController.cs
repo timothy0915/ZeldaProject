@@ -239,15 +239,15 @@ public class PlayerController : MonoBehaviour
             if (hit.collider.CompareTag("Enemy"))
             {
                 // 嘗試獲取敵人的控制腳本
-                EnemyController enemy = hit.collider.GetComponent<EnemyController>();
-                if (enemy != null)
+                IDamageable damageable = hit.collider.GetComponentInParent<IDamageable>();
+                if (damageable != null)
                 {
                     // 使敵人受到攻擊傷害
-                    enemy.TakeDamage(attackDamage);
+                    damageable.TakeDamage(attackDamage);
                     // 計算從玩家到敵人的方向（正規化後作為擊退方向）
-                    Vector3 knockbackDir = (enemy.transform.position - transform.position).normalized;
+                    Vector3 knockbackDir = (damageable.MyTransform.position - transform.position).normalized;
                     // 對敵人施加擊退效果，推離玩家
-                    enemy.ApplyKnockback(knockbackDir, attackKnockbackForce);
+                    damageable.ApplyKnockback(knockbackDir, attackKnockbackForce);
                     musicPlayer.s_hit();
                     Debug.Log("中");
                 }
