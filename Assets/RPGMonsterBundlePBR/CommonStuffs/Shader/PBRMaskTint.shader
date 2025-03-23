@@ -112,7 +112,7 @@ Shader "PBRMaskTint"
 		ENDCG
 	}
 	Fallback "Diffuse"
-// // // // // // // 	//CustomEditor "ASEMaterialInspector"  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool
+	//CustomEditor "ASEMaterialInspector"
 }
 /*ASEBEGIN
 Version=19105
