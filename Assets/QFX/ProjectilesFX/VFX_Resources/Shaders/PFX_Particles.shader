@@ -137,7 +137,7 @@ Shader "QFX/ProjectilesFX/Particles"
 			}
 		}	
 	}
-	CustomEditor "ASEMaterialInspector"
+// // // // // // // // // // // // // // // // // // // // // // // // // // 	CustomEditor "ASEMaterialInspector"  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool
 	
 	
 }

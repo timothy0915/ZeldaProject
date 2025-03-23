@@ -172,7 +172,7 @@ Shader "QFX/ProjectilesFX/Aura"
 			}
 		}	
 	}
-	CustomEditor "ASEMaterialInspector"
+// // // // // // // // // // // // // // // // // // // // // // // // // // 	CustomEditor "ASEMaterialInspector"  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool
 	
 	
 }

@@ -173,7 +173,7 @@ Shader "QFX/ProjectilesFX/Trail"
 			}
 		}	
 	}
-	CustomEditor "ASEMaterialInspector"
+// // // // // // // // // // // // // // // // // // // // // // // // // // 	CustomEditor "ASEMaterialInspector"  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool  // Removed by tool
 	
 	
 }

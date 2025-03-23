@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using System.IO;
+using System.Collections.Generic;
 
 public class RemoveASECustomEditor : EditorWindow
 {
@@ -12,19 +13,22 @@ public class RemoveASECustomEditor : EditorWindow
 
     private void OnGUI()
     {
-        GUILayout.Label("移除 ASE Shader CustomEditor", EditorStyles.boldLabel);
+        GUILayout.Label("掃描 QFX 資料夾並移除 ASE Shader UI", EditorStyles.boldLabel);
 
-        if (GUILayout.Button("掃描並移除 ASEMaterialInspector"))
+        if (GUILayout.Button("開始修復 QFX 裡的 Shader"))
         {
-            FixAllShaders();
+            FixShadersInQFX();
         }
     }
 
-    private static void FixAllShaders()
+    private static void FixShadersInQFX()
     {
-        string[] shaderGUIDs = AssetDatabase.FindAssets("t:Shader");
+        string[] shaderGUIDs = AssetDatabase.FindAssets("t:Shader", new[] { "Assets/QFX" });
 
         int fixCount = 0;
+
+        // 暫存要修改的檔案
+        Dictionary<string, string[]> modifiedFiles = new Dictionary<string, string[]>();
 
         foreach (string guid in shaderGUIDs)
         {
@@ -45,12 +49,19 @@ public class RemoveASECustomEditor : EditorWindow
 
             if (modified)
             {
-                File.WriteAllLines(path, lines);
-                Debug.Log($" 修正 Shader: {path}");
+                modifiedFiles.Add(path, lines);
             }
         }
 
+        // 統一寫入（避免中途刷新）
+        foreach (var entry in modifiedFiles)
+        {
+            File.WriteAllLines(entry.Key, entry.Value);
+            Debug.Log($" 修正 Shader: {entry.Key}");
+        }
+
         AssetDatabase.Refresh();
-        EditorUtility.DisplayDialog("完成", $"已修正 {fixCount} 個 Shader！", "OK");
+
+        EditorUtility.DisplayDialog("完成", $"已修正 {fixCount} 個 Shader（僅限 QFX）！", "OK");
     }
 }

@@ -11,7 +11,7 @@ public class DeathMageAttack : MonoBehaviour
 
     // 計時器
     private float attackTimer = 0f;
-    private float specialAttackTimer = 0f; // 用來控制 Attack3，每 10 秒
+    private float specialAttackTimer = 0f; // 用來控制 Attack，每 10 秒
 
     private bool isAttacking = false;
 
