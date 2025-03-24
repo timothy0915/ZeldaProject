@@ -229,27 +229,30 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void AttackRaycast()
     {
-        // 射線從角色位置向上偏移後發出，方向與角色正前方一致
         Ray ray = new Ray(transform.position + Vector3.up, transform.forward);
         RaycastHit hit;
-        // 在 attackRange 距離內檢測射線碰撞
+
         if (Physics.Raycast(ray, out hit, attackRange))
         {
-            // 如果碰撞物標籤為 "Enemy"，進行攻擊處理
             if (hit.collider.CompareTag("Enemy"))
             {
-                // 嘗試獲取敵人的控制腳本
-                EnemyController enemy = hit.collider.GetComponent<EnemyController>();
-                if (enemy != null)
+                // 嘗試從命中的物件或其父物件取得 IDamageable
+                IDamageable damageable = hit.collider.GetComponentInParent<IDamageable>();
+
+                if (damageable != null)
                 {
-                    // 使敵人受到攻擊傷害
-                    enemy.TakeDamage(attackDamage);
-                    // 計算從玩家到敵人的方向（正規化後作為擊退方向）
-                    Vector3 knockbackDir = (enemy.transform.position - transform.position).normalized;
-                    // 對敵人施加擊退效果，推離玩家
-                    enemy.ApplyKnockback(knockbackDir, attackKnockbackForce);
+                    // 呼叫統一的受傷與擊退邏輯
+                    Vector3 knockbackDir = (hit.collider.transform.position - transform.position).normalized;
+                    damageable.TakeDamage(attackDamage);
+                    damageable.ApplyKnockback(knockbackDir, attackKnockbackForce);
+
                     musicPlayer.s_hit();
-                    Debug.Log("中");
+                    Debug.Log("中打到 ");
+                }
+                else
+                {
+                    musicPlayer.s_swing();
+                    Debug.Log("揮找不到 ");
                 }
             }
             else
@@ -264,6 +267,7 @@ public class PlayerController : MonoBehaviour
             Debug.Log("揮");
         }
     }
+
 
     /// <summary>
     /// ApplyKnockback() 當玩家受到外部擊退（例如被敵人攻擊或碰到陷阱）時呼叫，
