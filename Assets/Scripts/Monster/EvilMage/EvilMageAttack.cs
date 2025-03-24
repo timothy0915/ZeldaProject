@@ -55,11 +55,16 @@ public class EvilMageAttack : MonoBehaviour
     void DoMeleeAttack()
     {
         isAttacking = true;
+
+        // 確保不會再發火球
+        CancelInvoke(nameof(ShootFireball));
+
         animator.ResetTrigger("MagicAttack");
         animator.SetTrigger("Attack");
         Invoke(nameof(ApplyMeleeDamage), 0.5f);
         Invoke(nameof(ResetAttack), attackCooldown);
     }
+
 
     void ApplyMeleeDamage()
     {

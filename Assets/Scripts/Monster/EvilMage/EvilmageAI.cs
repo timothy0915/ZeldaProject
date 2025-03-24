@@ -146,12 +146,13 @@ public class EvilmageAI : MonoBehaviour, IDamageable   //IDamageable使各項AI統一
         health -= damage;
         // 觸發受傷動畫
         animator.SetTrigger("GetHit");
-
+        Debug.Log("播放受擊動畫 GetHit");
         // 如果血量小於等於 0，則執行死亡程序
         if (health <= 0f)
         {
             Die();
         }
+
     }
 
     // 方法：當敵人受到攻擊時施加擊退效果
