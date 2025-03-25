@@ -15,6 +15,10 @@ public class EnemyController : MonoBehaviour, IDamageable
     public Transform player;
     public Animator animator;
 
+    [Header("疭")]
+    // 盢采疭Prefab╈逆
+    public GameObject deathEffect;
+
     private CharacterController characterController;
     private Vector3 knockbackDirection;
     private float knockbackTimer = 0f;
@@ -147,9 +151,17 @@ public class EnemyController : MonoBehaviour, IDamageable
         StartCoroutine(DeathRoutine());
     }
 
+    // э瑈祘单玻ネ采疭綪反ン
     private IEnumerator DeathRoutine()
     {
         yield return new WaitForSeconds(2f);
+
+        // 璝Τ﹚采疭Prefab玥玻ネ采狦
+        if (deathEffect != null)
+        {
+            Instantiate(deathEffect, transform.position, Quaternion.identity);
+        }
+
         Destroy(gameObject);
     }
 }
