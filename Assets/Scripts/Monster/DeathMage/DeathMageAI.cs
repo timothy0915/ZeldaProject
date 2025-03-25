@@ -91,31 +91,28 @@ public class DeathMageAI : MonoBehaviour, IDamageable
 
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
         if (distanceToPlayer <= detectionRange)
-            if (distanceToPlayer <= detectionRange)
+        {
+            Vector3 direction = (player.position - transform.position);
+            direction.y = 0;
+
+            if (direction.magnitude > 0.1f)
             {
-                Vector3 direction = (player.position - transform.position);
-                direction.y = 0;
+                transform.LookAt(new Vector3(player.position.x, transform.position.y, player.position.z));
+                animator.SetBool("IsMoving", true);
+                characterController.SimpleMove(transform.forward * speed);
 
-                if (direction.magnitude > 0)
-                {
-                    transform.LookAt(new Vector3(player.position.x, transform.position.y, player.position.z));
-                    animator.SetBool("IsMoving", true);
-                }
-                else
-                {
-                    animator.SetBool("IsMoving", false);
-                }
-
-                characterController.SimpleMove(direction.normalized * speed);
             }
-            else
-            {
-                animator.SetBool("IsMoving", false);
-            }
-    }
+        }
+        else
+        {
+            animator.SetBool("IsMoving", false);
+        }
+    
+
+}
 
 
-    public void TakeDamage(float damage)
+public void TakeDamage(float damage)
     {
         if (isDead) return;
 
