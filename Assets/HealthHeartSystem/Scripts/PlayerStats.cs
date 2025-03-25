@@ -10,8 +10,9 @@ public class PlayerStats : MonoBehaviour
     public delegate void OnHealthChangedDelegate();
     public OnHealthChangedDelegate onHealthChangedCallback;
     public PlayerController controller;
-    public string targetSceneName;
-    private bool isReloading = false; // 避免多次觸發
+    public WinOrDie WinOrDie;
+    public DeathMageAI DeathMageAI;
+
     #region Sigleton
     private static PlayerStats instance;
     public static PlayerStats Instance
@@ -34,9 +35,13 @@ public class PlayerStats : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.R)) controller.health = maxHealth;
         if(health!= controller.health) health = controller.health; ClampHealth();
-        if (controller.isDead && !isReloading)
+        if (DeathMageAI.isDead)
         {
-            Invoke("Dying", 1.5f);
+            WinOrDie.Win();
+        }
+        else if (controller.isDead)
+        {
+            WinOrDie.Die();
         }
     }
 
@@ -74,12 +79,6 @@ public class PlayerStats : MonoBehaviour
                 onHealthChangedCallback.Invoke();
         }   
     }
-    void Dying()
-    {
-        isReloading = true;
-        SceneManager.LoadScene(targetSceneName);
-    }
-
     void ClampHealth()
     {
         health = Mathf.Clamp(health, 0, maxHealth);
