@@ -35,18 +35,18 @@ public class MusicPlayer : MonoBehaviour
     void OpenChest()
     {
         musicAudio.PlayOneShot(openChest, 0.2f);
-        musicAudio.volume = 0.5f;
+        musicAudio.volume = 0.4f;
         Invoke("TurnBackVolume", 3);
     }
     void LinkDying()
     {
         musicAudio.PlayOneShot(linkDying, 1);
-        musicAudio.volume = 0.5f;
+        musicAudio.volume = 0.4f;
         isDied=true;
     }
    void TurnBackVolume()
     {
-        musicAudio.volume = 1;
+        musicAudio.volume = 0.8f;
     }
     public void s_swing()
     {
