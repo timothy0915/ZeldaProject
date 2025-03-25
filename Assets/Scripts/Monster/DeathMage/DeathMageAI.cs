@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DeathMageAI : MonoBehaviour, IDamageable
@@ -11,7 +10,7 @@ public class DeathMageAI : MonoBehaviour, IDamageable
     public float stunDuration = 0.5f;
 
     [Header("血量設定")]
-    public float health = 10f;
+    public float health = 8f;
     public Transform player;
     public Animator animator;
 
@@ -75,51 +74,53 @@ public class DeathMageAI : MonoBehaviour, IDamageable
         else
         {
             //唯一負責移動的區塊
-            MoveTowardsPlayer(isInAction);
+            MoveTowardsPlayer();
         }
     }
 
-    private void MoveTowardsPlayer(bool isInAction)
+    private void MoveTowardsPlayer()
     {
         if (player == null) return;
 
         PlayerController playerController = player.GetComponent<PlayerController>();
         if (playerController != null && playerController.isDead)
         {
-            if (!isInAction) animator.SetBool("IsMoving", false);
+            animator.SetBool("IsMoving", false);
             return;
         }
 
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
         if (distanceToPlayer <= detectionRange)
-        {
-            Vector3 direction = player.position - transform.position;
-            direction.y = 0;
-
-            if (direction.magnitude > 0)
+            if (distanceToPlayer <= detectionRange)
             {
-                transform.LookAt(new Vector3(player.position.x, transform.position.y, player.position.z));
-                if (!isInAction) animator.SetBool("IsMoving", true);
+                Vector3 direction = (player.position - transform.position);
+                direction.y = 0;
+
+                if (direction.magnitude > 0)
+                {
+                    transform.LookAt(new Vector3(player.position.x, transform.position.y, player.position.z));
+                    animator.SetBool("IsMoving", true);
+                }
+                else
+                {
+                    animator.SetBool("IsMoving", false);
+                }
+
+                characterController.SimpleMove(direction.normalized * speed);
             }
             else
             {
-                if (!isInAction) animator.SetBool("IsMoving", false);
+                animator.SetBool("IsMoving", false);
             }
-
-            characterController.SimpleMove(direction.normalized * speed);
-        }
-        else
-        {
-            if (!isInAction) animator.SetBool("IsMoving", false);
-        }
     }
+
 
     public void TakeDamage(float damage)
     {
         if (isDead) return;
 
         health -= damage;
-        animator.SetTrigger("GetHit");
+        animator.CrossFade("Take Damage", 0f ,0);
 
         if (health <= 0f)
         {
@@ -141,12 +142,14 @@ public class DeathMageAI : MonoBehaviour, IDamageable
         if (isDead) return;
         isDead = true;
 
-        animator.SetTrigger("Die");
+        animator.CrossFade("Die", 0f, 0);
         characterController.enabled = false;
 
-        EvilmageAI oldAI = GetComponent<EvilmageAI>();
-        if (oldAI != null) oldAI.enabled = false;
-
+        DeathMageAttack oldAI = GetComponent<DeathMageAttack>();
+        if (oldAI != null)
+        {
+            oldAI.enabled = false;
+        }
         StartCoroutine(DeathRoutine());
     }
 
