@@ -154,14 +154,52 @@ public class EnemyController : MonoBehaviour, IDamageable
     // 修改後的死亡流程：等待後產生死亡粒子特效再銷毀物件
     private IEnumerator DeathRoutine()
     {
-        yield return new WaitForSeconds(2f);
-
-        // 若有指定粒子特效Prefab則產生粒子效果
+        // 立即在敵人位置生成粒子特效（不設定父物件，以免敵人銷毀影響特效）
+        GameObject particleInstance = null;
         if (deathEffect != null)
         {
-            Instantiate(deathEffect, transform.position, Quaternion.identity);
+            particleInstance = Instantiate(deathEffect, transform.position, Quaternion.identity);
         }
 
+        // 敵人死亡後先停留2秒，讓死亡動畫與粒子特效同步播放
+        yield return new WaitForSeconds(2f);
+
+        // 開始敵人掉落的動作
+        float dropDuration = 1f;      // 掉落的持續時間
+        float dropDistance = 5f;      // 掉落的距離（根據場景調整）
+        float elapsed = 0f;
+        Vector3 startPos = transform.position;
+        Vector3 targetPos = startPos - new Vector3(0, dropDistance, 0);
+
+        while (elapsed < dropDuration)
+        {
+            transform.position = Vector3.Lerp(startPos, targetPos, elapsed / dropDuration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        transform.position = targetPos;
+
+        // 掉落完成後等待粒子特效完整播放
+        if (particleInstance != null)
+        {
+            ParticleSystem ps = particleInstance.GetComponent<ParticleSystem>();
+            if (ps != null)
+            {
+                float totalDuration = ps.main.duration + ps.main.startLifetime.constantMax;
+                yield return new WaitForSeconds(totalDuration);
+            }
+            else
+            {
+                yield return new WaitForSeconds(2f);
+            }
+            Destroy(particleInstance);
+        }
+        else
+        {
+            yield return new WaitForSeconds(2f);
+        }
+
+        // 最後銷毀敵人物件
         Destroy(gameObject);
     }
-}
+    }
