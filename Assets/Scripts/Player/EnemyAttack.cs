@@ -78,7 +78,7 @@ public class EnemyAttack : MonoBehaviour
         // 計算敵人和玩家之間的距離
         float distance = Vector3.Distance(transform.position, player.transform.position);
         // 如果玩家在攻擊範圍內則進行攻擊
-        if (distance <= attackRange)
+        if (distance <= attackRange&& !animator.GetCurrentAnimatorStateInfo(0).IsName("GetHit"))
         {
             // 如果 Animator 存在，則觸發攻擊
             if (animator != null)
