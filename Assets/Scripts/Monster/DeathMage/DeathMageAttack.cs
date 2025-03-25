@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DeathMageAttack : MonoBehaviour
@@ -48,21 +46,21 @@ public class DeathMageAttack : MonoBehaviour
 
         if (distance <= attackRange)
         {
-            string attackTrigger;
+            //string attackTrigger;
 
             if (specialAttackTimer <= 0f)
             {
                 // 每 10 秒觸發一次 Attack3
-                attackTrigger = "Attack3";
+                animator.SetTrigger("Attack3");
                 specialAttackTimer = 10f; // 重設特殊攻擊計時器
             }
-            else
+            else if (specialAttackTimer >= 0f)
             {
                 // 50% 隨機使用 Attack 或 Attack2
-                attackTrigger = Random.value < 0.5f ? "Attack" : "Attack2";
+                animator.SetTrigger("Attack");
             }
 
-            animator.SetTrigger(attackTrigger);
+            //animator.SetTrigger(attackTrigger);
             isAttacking = true;
 
             Invoke(nameof(PerformMeleeAttack), 0.5f); // 延遲傷害
