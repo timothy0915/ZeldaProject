@@ -5,7 +5,7 @@ public class DistanceTrace : MonoBehaviour
     public Transform CamPoint;  // 鏡頭跟隨點
     public Transform player;    // 玩家
     public float moveSpeed = 4f;
-    public float followThreshold = 2f;  // 超過這個距離才開始移動
+    public float followThreshold = 3.5f;  // 超過這個距離才開始移動
     public float stopThreshold = 4f;    // 接近到這個距離後停止移動
     public float lerpSpeed = 1.2f;        // 用於平滑移動
     private bool ifOut = false;         // 是否超出範圍

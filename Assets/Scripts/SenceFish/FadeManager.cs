@@ -21,7 +21,7 @@ public class FadeManager : MonoBehaviour
     {
         opening = true;
         canvasGroup.alpha = 1.0f;
-        fadeSpeed = 0.01f;
+        fadeSpeed = 0.05f;
         closed = false;
         moved = false;
         delayTime = 1.5f;
@@ -77,7 +77,7 @@ public class FadeManager : MonoBehaviour
         canvasGroup.alpha = Mathf.Lerp(canvasGroup.alpha, 0, fadeSpeed);
         // canvasGroup.alpha -= canvasGroup.alpha * Time.deltaTime;
         Debug.Log(canvasGroup.alpha);
-        if (canvasGroup.alpha <= 0.05)
+        if (canvasGroup.alpha <= 0.01)
         {
             canvasGroup.alpha = 0;
             opening = false;
