@@ -145,8 +145,7 @@ public class EvilmageAI : MonoBehaviour, IDamageable   //IDamageable使各項AI統一
         // 扣除血量
         health -= damage;
         // 觸發受傷動畫
-        animator.SetTrigger("GetHit");
-        Debug.Log("播放受擊動畫 GetHit");
+        animator.CrossFade("GetHit", 0f, 0);
         // 如果血量小於等於 0，則執行死亡程序
         if (health <= 0f)
         {
@@ -177,7 +176,7 @@ public class EvilmageAI : MonoBehaviour, IDamageable   //IDamageable使各項AI統一
         isDead = true;
 
         // 觸發死亡動畫，在 Animator 中應該有 "Die" 的 Trigger
-        animator.SetTrigger("Die");
+        animator.CrossFade("Die", 0f, 0);
 
         // 停用角色控制器，避免死亡後仍進行碰撞或移動
         characterController.enabled = false;
