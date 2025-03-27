@@ -7,9 +7,11 @@ using UnityEngine.UI;
 public class GetSkill : MonoBehaviour
 {
     public GameObject dialogBox;      // 對話框物件，用於顯示或隱藏提示訊息
+    public GameObject hint;
     public Text dialogText;           // 對話框內顯示的文字
     public string dialog;             // 要顯示的對話內容
     public bool playerInRange;        // 判斷玩家是否進入觸發範圍
+    public Transform Cam;
 
     // 寶箱的動畫控制器，必須在 Inspector 中指定對應的 Animator
     public Animator chestAnimator;
@@ -56,6 +58,8 @@ public class GetSkill : MonoBehaviour
         // 如果進入的物件標記為 "Player"，則設定 playerInRange 為 true
         if (other.CompareTag("Player"))
         {
+            hint.SetActive(true);
+            hint.transform.LookAt(Cam);
             playerInRange = true;
         }
     }
@@ -66,6 +70,7 @@ public class GetSkill : MonoBehaviour
         // 如果離開的物件標記為 "Player"，則設定 playerInRange 為 false
         if (other.CompareTag("Player"))
         {
+            hint.SetActive(false);
             playerInRange = false;
             chestAnimator.SetBool("OpenChest", false);
             // 當玩家離開時，自動關閉對話框
