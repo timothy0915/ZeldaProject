@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     public CharacterController controller;  // 利用 Unity 內建的 CharacterController 處理角色的碰撞和移動
     public Animator animator;               // 用於控制角色動畫的 Animator 元件
     public MusicPlayer musicPlayer;
+    public DemageNum demageNum;
 
 
     [Header("移動設定")]
@@ -243,6 +244,7 @@ public class PlayerController : MonoBehaviour
                 {
                     // 呼叫統一的受傷與擊退邏輯
                     Vector3 knockbackDir = (hit.collider.transform.position - transform.position).normalized;
+                    DemageNum.SpawnNumber(hit.collider.transform.position, (int)attackDamage);
                     damageable.TakeDamage(attackDamage);
                     damageable.ApplyKnockback(knockbackDir, attackKnockbackForce);
 
