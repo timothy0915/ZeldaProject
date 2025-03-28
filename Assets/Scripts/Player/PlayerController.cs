@@ -244,7 +244,7 @@ public class PlayerController : MonoBehaviour
                 {
                     // 呼叫統一的受傷與擊退邏輯
                     Vector3 knockbackDir = (hit.collider.transform.position - transform.position).normalized;
-                    DemageNum.SpawnNumber(hit.collider.transform.position, (int)attackDamage);
+                    DemageNum.Instance.SpawnNumber(hit.collider.transform.position, (int)attackDamage);
                     damageable.TakeDamage(attackDamage);
                     damageable.ApplyKnockback(knockbackDir, attackKnockbackForce);
 
