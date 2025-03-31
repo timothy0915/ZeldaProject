@@ -34,7 +34,7 @@ public class MusicPlayer : MonoBehaviour
     }
     void OpenChest()
     {
-        musicAudio.PlayOneShot(openChest, 0.2f);
+        musicAudio.PlayOneShot(openChest, 0.25f);
         musicAudio.volume = 0.4f;
         Invoke("TurnBackVolume", 3);
     }
