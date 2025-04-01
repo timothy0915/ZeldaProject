@@ -16,6 +16,7 @@ public class MusicPlayer : MonoBehaviour
     void Start()
     {
         musicAudio = GetComponent<AudioSource>();
+        TurnBackVolume();
     }
     // Update is called once per frame
     void Update()
@@ -34,19 +35,19 @@ public class MusicPlayer : MonoBehaviour
     }
     void OpenChest()
     {
-        musicAudio.PlayOneShot(openChest, 0.25f);
-        musicAudio.volume = 0.4f;
+        musicAudio.PlayOneShot(openChest, 0.2f);
+        musicAudio.volume = 0.3f;
         Invoke("TurnBackVolume", 3);
     }
     void LinkDying()
     {
         musicAudio.PlayOneShot(linkDying, 1);
-        musicAudio.volume = 0.4f;
+        musicAudio.volume = 0.3f;
         isDied=true;
     }
    void TurnBackVolume()
     {
-        musicAudio.volume = 0.8f;
+        musicAudio.volume = 0.5f;
     }
     public void s_swing()
     {
