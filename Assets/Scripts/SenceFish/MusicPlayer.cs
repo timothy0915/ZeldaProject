@@ -35,26 +35,26 @@ public class MusicPlayer : MonoBehaviour
     }
     void OpenChest()
     {
-        musicAudio.PlayOneShot(openChest, 0.2f);
-        musicAudio.volume = 0.3f;
+        musicAudio.PlayOneShot(openChest, 0.1f);
+        musicAudio.volume = 0.2f;
         Invoke("TurnBackVolume", 3);
     }
     void LinkDying()
     {
-        musicAudio.PlayOneShot(linkDying, 1);
-        musicAudio.volume = 0.3f;
+        musicAudio.PlayOneShot(linkDying, 0.8f);
+        musicAudio.volume = 0.2f;
         isDied=true;
     }
    void TurnBackVolume()
     {
-        musicAudio.volume = 0.5f;
+        musicAudio.volume = 0.4f;
     }
     public void s_swing()
     {
-        musicAudio.PlayOneShot(S_swing, 1);
+        musicAudio.PlayOneShot(S_swing, 0.9f);
     }
     public void s_hit()
     {
-        musicAudio.PlayOneShot(S_hit, 1);
+        musicAudio.PlayOneShot(S_hit, 0.9f);
     }
 }
